@@ -4,19 +4,20 @@ const esprima = require('esprima')
 const fileContent = fs.readFileSync('your_file.js', 'utf-8')
 const lines = fileContent.split('\n')
 
-const ast = esprima.parseScript(fileContent, { loc: true })
+const parseParameters = { loc: true }
+const ast = esprima.parseScript(fileContent, parseParameters)
 
 const functionLineCountsResult = {}
 
 function traverse(node) {
-    if (['FunctionDeclaration'].includes(node.type)) {
+    if ('FunctionDeclaration' === node.type) {
         // count the lines of funcion which is defined by a FunctionDeclaration way
         if (node.id) {
             const functionName = node.id.name
             const { start, end } = node.body.loc
             countLines(start, end, functionName)
         }
-    } else if (['VariableDeclaration'].includes(node.type) && ['FunctionExpression', 'ArrowFunctionExpression'].includes(node.declarations[0].init.type)) {
+    } else if ('VariableDeclaration' === node.type && ['FunctionExpression', 'ArrowFunctionExpression'].includes(node.declarations[0].init?.type)) {
         // count the lines of funcion which is defined by a VariableDeclaration way
         const functionName = node.declarations[0].id.name
         const { start, end } = node.declarations[0].init.body.loc
@@ -30,7 +31,7 @@ function traverse(node) {
             const { start, end } = node.value.body.loc
             countLines(start, end, functionName)
 
-        } else if (node.value.type === 'ObjectExpression') {
+        } else if ('ObjectExpression' === node.value.type) {
             // count the function lines of a certain Object nesting inside another Object's property 
             for (const property of node.value.properties) {
                 traverse(property)
