@@ -3,9 +3,10 @@ const esprima = require('esprima')
 
 const fileContent = fs.readFileSync('your_file.js', 'utf-8')
 const lines = fileContent.split('\n')
+const isModule = fileContent.indexOf('import') >= 0 || fileContent.indexOf('export') >= 0
 
 const parseParameters = { loc: true }
-const ast = esprima.parseScript(fileContent, parseParameters)
+const ast = isModule ? esprima.parseModule(fileContent, parseParameters) : esprima.parseScript(fileContent, parseParameters)
 
 const functionLineCountsResult = {}
 
