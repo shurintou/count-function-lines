@@ -60,6 +60,8 @@ function countLines(start, end, functionName) {
 traverse(ast)
 
 // output the result
+let outputStr = ''
 for (const functionName in functionLineCountsResult) {
-    console.log(`The lines of function '${functionName}' is：${functionLineCountsResult[functionName]}`)
+    outputStr += `The lines of function '${functionName}' is：${functionLineCountsResult[functionName]}\n`
 }
+fs.writeFileSync('result.txt', outputStr)
