@@ -9,40 +9,29 @@ const ast = esprima.parseScript(fileContent, { loc: true })
 const functionLineCountsResult = {}
 
 function traverse(node) {
-    if (['FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression'].includes(node.type)) {
+    if (['FunctionDeclaration'].includes(node.type)) {
+        // count the lines of funcion which is defined by a FunctionDeclaration way
         if (node.id) {
             const functionName = node.id.name
             const { start, end } = node.body.loc
-
-            // count normal function lines
-            let lineCount = 0
-            for (let i = start.line - 1; i < end.line; i++) {
-                if (lines[i].trim() !== '') {
-                    lineCount++
-                }
-            }
-
-            functionLineCountsResult[functionName] = lineCount
+            countLines(start, end, functionName)
         }
+    } else if (['VariableDeclaration'].includes(node.type) && ['FunctionExpression', 'ArrowFunctionExpression'].includes(node.declarations[0].init.type)) {
+        // count the lines of funcion which is defined by a VariableDeclaration way
+        const functionName = node.declarations[0].id.name
+        const { start, end } = node.declarations[0].init.body.loc
+        countLines(start, end, functionName)
 
     } else if (node.type === 'Property') {
+        // count the lines of function in Object declaration
         if (['FunctionExpression', 'ArrowFunctionExpression'].includes(node.value.type)) {
+            // count the lines of function as an property of a certain Object 
             const functionName = node.key.name
             const { start, end } = node.value.body.loc
-            const lines = fileContent.split('\n')
-
-            // count the function lines of Object's property
-            let lineCount = 0
-            for (let i = start.line - 1; i < end.line; i++) {
-                if (lines[i].trim() !== '') {
-                    lineCount++
-                }
-            }
-
-            functionLineCountsResult[functionName] = lineCount
+            countLines(start, end, functionName)
 
         } else if (node.value.type === 'ObjectExpression') {
-            // count the function lines of an Object nesting inside the Object's property 
+            // count the function lines of a certain Object nesting inside another Object's property 
             for (const property of node.value.properties) {
                 traverse(property)
             }
@@ -54,6 +43,16 @@ function traverse(node) {
             traverse(node[key])
         }
     }
+}
+
+function countLines(start, end, functionName) {
+    let lineCount = 0
+    for (let i = start.line - 1; i < end.line; i++) {
+        if (lines[i].trim() !== '') {
+            lineCount++
+        }
+    }
+    functionLineCountsResult[functionName] = lineCount
 }
 
 traverse(ast)
