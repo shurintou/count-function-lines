@@ -1,0 +1,19 @@
+{
+    "name": "count-function-lines",
+    "version": "0.0.1",
+    "description": "A script to count each function's lines in your Javascript file",
+    "main": "index.js",
+    "scripts": {
+        "start": "node src/index.js"
+    },
+    "keywords": [
+        "count",
+        "function",
+        "lines"
+    ],
+    "author": "Shurintou",
+    "license": "MIT",
+    "dependencies": {
+        "esprima": "^4.0.1"
+    }
+}
