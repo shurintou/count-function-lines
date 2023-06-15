@@ -11,6 +11,8 @@ let { comments } = ast
 
 const functionLineCountsResult = {}
 
+const COUNT_COMMENT = true
+
 function traverse(node) {
     if (node.type === 'FunctionDeclaration') {
         // count the lines of funcion which is defined by a FunctionDeclaration way
@@ -63,6 +65,8 @@ function countLines(start, end, functionName) {
 }
 
 function commentLinesCount(lineNumber, lineStr) {
+    if (COUNT_COMMENT) return 0
+
     let countResult = 0
     const countedCommentsIndex = []
 
