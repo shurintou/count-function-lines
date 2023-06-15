@@ -40,11 +40,11 @@ function traverse(node) {
                 traverse(property)
             }
         }
-    } else {
-        for (const key in node) {
-            if (node[key] && typeof node[key] === 'object') {
-                traverse(node[key])
-            }
+    }
+
+    for (const key in node) {
+        if (node[key] && typeof node[key] === 'object') {
+            traverse(node[key])
         }
     }
 }
