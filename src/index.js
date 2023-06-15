@@ -67,13 +67,15 @@ function commentLinesCount(lineNumber, lineStr) {
     comments.forEach((comment, index) => {
         const { loc: { start: { line: startLine }, end: { line: endLine } } } = comment
         if (startLine <= lineNumber && lineNumber <= endLine) {
-            if (comment.type === 'Block' && startLine !== endLine) {
-                // multi-line with block type comment
-                countedCommentsIndex.push(index)
-                countResult = endLine - startLine + 1
+            if (comment.type === 'Block') {
+                if (startLine !== endLine) {
+                    // multi-line with block type comment
+                    countedCommentsIndex.push(index)
+                    countResult = endLine - startLine + 1
+                }
             }
-            else if (lineStr === comment.value.trim()) {
-                // single line with block or line type comment
+            else if (lineStr === '//' + comment.value) {
+                // single line with line type comment
                 countedCommentsIndex.push(index)
                 countResult = 1
             }
