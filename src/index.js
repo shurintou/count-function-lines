@@ -7,7 +7,7 @@ const isModule = fileContent.indexOf('import') >= 0 || fileContent.indexOf('expo
 
 const parseParameters = { loc: true, comment: true, range: true }
 const ast = isModule ? esprima.parseModule(fileContent, parseParameters) : esprima.parseScript(fileContent, parseParameters)
-const { comments } = ast
+let { comments } = ast
 
 const functionLineCountsResult = {}
 
@@ -53,28 +53,37 @@ function countLines(start, end, functionName) {
     let lineCount = 0
     for (let i = start.line - 1; i < end.line; i++) {
         const lineStr = lines[i].trim()
-        if (lineStr !== '' && !isCommentLine(i, lineStr)) {
-            lineCount++
+        if (lineStr !== '') {
+            lineCount = lineCount + 1 - commentLinesCount(i, lineStr)
         }
     }
     functionLineCountsResult[functionName] = lineCount
 }
 
-function isCommentLine(lineNumber, lineStr) {
-    for (const comment of comments) {
-        const { loc: { start: { line: StartLine }, end: { line: endLine } } } = comment
-        if (StartLine <= lineNumber && lineNumber <= endLine) {
-            if (comment.type === 'Block' && StartLine !== endLine) {
+function commentLinesCount(lineNumber, lineStr) {
+    let countResult = 0
+    const countedCommentsIndex = []
+
+    comments.forEach((comment, index) => {
+        const { loc: { start: { line: startLine }, end: { line: endLine } } } = comment
+        if (startLine <= lineNumber && lineNumber <= endLine) {
+            if (comment.type === 'Block' && startLine !== endLine) {
                 // multi-line with block type comment
-                return true
+                countedCommentsIndex.push(index)
+                countResult = endLine - startLine + 1
             }
             else if (lineStr === comment.value.trim()) {
                 // single line with block or line type comment
-                return true
+                countedCommentsIndex.push(index)
+                countResult = 1
             }
         }
-    }
-    return false
+    })
+
+    // to remove comments that already counted or passed
+    comments = comments.filter((comment, index) => !countedCommentsIndex.includes(index) && comment.loc.start.line > lineNumber)
+
+    return countResult
 }
 
 traverse(ast)
