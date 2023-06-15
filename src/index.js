@@ -50,14 +50,16 @@ function traverse(node) {
 }
 
 function countLines(start, end, functionName) {
-    let lineCount = 0
-    for (let i = start.line - 1; i < end.line; i++) {
-        const lineStr = lines[i].trim()
-        if (lineStr !== '') {
-            lineCount = lineCount + 1 - commentLinesCount(i + 1, lineStr)
+    if (!functionLineCountsResult.hasOwnProperty(functionName)) {
+        let lineCount = 0
+        for (let i = start.line - 1; i < end.line; i++) {
+            const lineStr = lines[i].trim()
+            if (lineStr !== '') {
+                lineCount = lineCount + 1 - commentLinesCount(i + 1, lineStr)
+            }
         }
+        functionLineCountsResult[functionName] = lineCount
     }
-    functionLineCountsResult[functionName] = lineCount
 }
 
 function commentLinesCount(lineNumber, lineStr) {
