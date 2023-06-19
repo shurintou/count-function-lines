@@ -2,7 +2,7 @@ const fs = require('fs')
 const esprima = require('esprima')
 const parseParameters = { loc: true, comment: true, range: true }
 
-const jsFuncCount = function (filePath, countComment) {
+const jsFuncCount = function (filePath, countComment = false) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
     const lines = fileContent.split('\n')
     const isModule = fileContent.indexOf('import') >= 0 || fileContent.indexOf('export') >= 0
