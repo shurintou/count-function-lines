@@ -1,8 +1,10 @@
 const fs = require('fs')
 const esprima = require('esprima')
 const parseParameters = { loc: true, comment: true, range: true }
+const config = require('./config')
+const COUNT_COMMENT = config.countComment ? true : false
 
-const jsFuncCount = function (filePath, countComment = false) {
+const jsFuncCount = function (filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
     const lines = fileContent.split('\n')
     const isModule = fileContent.indexOf('import') >= 0 || fileContent.indexOf('export') >= 0
@@ -64,7 +66,7 @@ const jsFuncCount = function (filePath, countComment = false) {
     }
 
     function commentLinesCount(lineNumber, lineStr) {
-        if (countComment) return 0
+        if (COUNT_COMMENT) return 0
 
         let countResult = 0
         const countedCommentsIndex = []

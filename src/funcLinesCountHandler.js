@@ -1,8 +1,10 @@
 const fs = require('fs')
 const path = require('path')
-const jsFunctionLineCount = require('./jsFunctionLineCount')
+const jsFunctionLineCounter = require('./jsFunctionLineCounter')
+const config = require('./config')
+const TARGET_PATH = config.targetPath
 
-const funcLinesCountHandler = function (directoryPath) {
+const funcLinesCountHandler = function () {
     let outputStr = ''
 
     function traverseDirectory(directoryPath) {
@@ -16,7 +18,7 @@ const funcLinesCountHandler = function (directoryPath) {
             })
         } else {
             if (path.extname(directoryPath) === '.js') {
-                const functionLineCountsResult = jsFunctionLineCount(directoryPath)
+                const functionLineCountsResult = jsFunctionLineCounter(directoryPath)
                 if (Object.keys(functionLineCountsResult).length > 0) {
                     outputStr += directoryPath + '\n'
                     // output the result
@@ -29,7 +31,8 @@ const funcLinesCountHandler = function (directoryPath) {
         }
     }
 
-    traverseDirectory(directoryPath)
+    if (TARGET_PATH !== '') traverseDirectory(TARGET_PATH)
+
     return outputStr
 }
 
