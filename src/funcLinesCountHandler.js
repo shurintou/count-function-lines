@@ -23,7 +23,7 @@ const funcLinesCountHandler = function () {
                     outputStr += directoryPath + '\n'
                     // output the result
                     for (const functionName in functionLineCountsResult) {
-                        outputStr += `The lines of function '${functionName}' is：${functionLineCountsResult[functionName]}\n`
+                        outputStr += config.outputTemplate(functionName, functionLineCountsResult[functionName])
                     }
                     outputStr += '\n'
                 }
