@@ -10,7 +10,6 @@ const jsFuncCount = function (filePath) {
         sourceType: isModule ? 'module' : 'script',
         tokens: true,
         ranges: true,
-        comments: true, // enable comments parsing
     });
 
     const functionLineCountsResult = {};
@@ -35,7 +34,7 @@ const jsFuncCount = function (filePath) {
                         declaration.init?.type === 'ArrowFunctionExpression')
                 ) {
                     const functionName = declaration.id.name;
-                    const { start, end } = declaration.init.body.loc;
+                    const { start, end } = declaration.init?.body.loc;
                     countLines(start.line, end.line, functionName);
                 }
             } else if (path.isProperty()) {
@@ -49,6 +48,10 @@ const jsFuncCount = function (filePath) {
                     const { start, end } = value.body.loc;
                     countLines(start.line, end.line, functionName);
                 }
+            } else if (path.isObjectMethod()) {
+                const methodName = path.node.key.name;
+                const { start, end } = path.node.body.loc;
+                countLines(start.line, end.line, methodName);
             }
         },
     });
