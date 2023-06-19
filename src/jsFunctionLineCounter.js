@@ -1,61 +1,65 @@
 const fs = require('fs')
-const esprima = require('esprima')
-const parseParameters = { loc: true, comment: true, range: true }
+const parser = require('@babel/parser')
+const traverse = require('@babel/traverse').default
 const config = require('./config')
 const COUNT_COMMENT = config.countComment ? true : false
 
 const jsFuncCount = function (filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
+    const isModule = fileContent.includes('import') || fileContent.includes('export')
     const lines = fileContent.split('\n')
-    const isModule = fileContent.indexOf('import') >= 0 || fileContent.indexOf('export') >= 0
 
-    const ast = isModule ? esprima.parseModule(fileContent, parseParameters) : esprima.parseScript(fileContent, parseParameters)
-    let { comments } = ast
+    const ast = parser.parse(fileContent, {
+        sourceType: isModule ? 'module' : 'script',
+        tokens: true,
+        ranges: true,
+        attachComment: true,
+    })
 
     const functionLineCountsResult = {}
 
-    function traverse(node) {
-        if (node.type === 'FunctionDeclaration') {
-            // count the lines of funcion which is defined by a FunctionDeclaration way
-            if (node.id) {
-                const functionName = node.id.name
-                const { start, end } = node.body.loc
-                countLines(start, end, functionName)
-            }
-        } else if (node.type === 'VariableDeclaration') {
-            // count the lines of funcion which is defined by a VariableDeclaration way
-            if (['FunctionExpression', 'ArrowFunctionExpression'].includes(node.declarations[0].init?.type)) {
-                const functionName = node.declarations[0].id.name
-                const { start, end } = node.declarations[0].init.body.loc
-                countLines(start, end, functionName)
-            }
-        } else if (node.type === 'Property') {
-            // count the lines of function in Object declaration
-            if (['FunctionExpression', 'ArrowFunctionExpression'].includes(node.value.type)) {
-                // count the lines of function as an property of a certain Object 
-                const functionName = node.key.name
-                const { start, end } = node.value.body.loc
-                countLines(start, end, functionName)
+    let { comments } = ast
 
-            } else if (node.value.type === 'ObjectExpression') {
-                // count the function lines of a certain Object nesting inside another Object's property 
-                for (const property of node.value.properties) {
-                    traverse(property)
+    traverse(ast, {
+        enter(path) {
+            if (path.isFunctionDeclaration()) {
+                const functionName = path.node.id.name
+                const { start, end } = path.node.loc
+                countLines(start.line, end.line, functionName)
+            } else if (path.isVariableDeclaration()) {
+                const declaration = path.node.declarations[0]
+                if (
+                    declaration &&
+                    (declaration.init?.type === 'FunctionExpression' ||
+                        declaration.init?.type === 'ArrowFunctionExpression')
+                ) {
+                    const functionName = declaration.id.name
+                    const { start, end } = declaration.init?.body.loc
+                    countLines(start.line, end.line, functionName)
                 }
+            } else if (path.isProperty()) {
+                const value = path.node.value
+                if (
+                    value &&
+                    (value.type === 'FunctionExpression' ||
+                        value.type === 'ArrowFunctionExpression')
+                ) {
+                    const functionName = path.node.key.name
+                    const { start, end } = value.body.loc
+                    countLines(start.line, end.line, functionName)
+                }
+            } else if (path.isObjectMethod()) {
+                const methodName = path.node.key.name
+                const { start, end } = path.node.body.loc
+                countLines(start.line, end.line, methodName)
             }
-        }
+        },
+    })
 
-        for (const key in node) {
-            if (node[key] && typeof node[key] === 'object') {
-                traverse(node[key])
-            }
-        }
-    }
-
-    function countLines(start, end, functionName) {
+    function countLines(startLine, endLine, functionName) {
         if (!functionLineCountsResult.hasOwnProperty(functionName)) {
             let lineCount = 0
-            for (let i = start.line - 1; i < end.line; i++) {
+            for (let i = startLine - 1; i < endLine; i++) {
                 const lineStr = lines[i].trim()
                 if (lineStr !== '') {
                     lineCount = lineCount + 1 - commentLinesCount(i + 1, lineStr)
@@ -74,7 +78,7 @@ const jsFuncCount = function (filePath) {
         comments.forEach((comment, index) => {
             const { loc: { start: { line: startLine }, end: { line: endLine } } } = comment
             if (startLine <= lineNumber && lineNumber <= endLine) {
-                if (comment.type === 'Block') {
+                if (comment.type === 'CommentBlock') {
                     if (startLine !== endLine) {
                         // multi-line with block type comment
                         countedCommentsIndex.push(index)
@@ -91,11 +95,8 @@ const jsFuncCount = function (filePath) {
 
         // to remove comments that already counted or passed
         comments = comments.filter((comment, index) => !countedCommentsIndex.includes(index) && comment.loc.start.line > lineNumber)
-
         return countResult
     }
-
-    traverse(ast)
 
     return functionLineCountsResult
 }
