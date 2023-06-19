@@ -23,10 +23,12 @@ const jsFuncCounter = function (filePath) {
     traverse(ast, {
         enter(path) {
             if (path.isFunctionDeclaration()) {
+                // count the lines of funcion which is defined by a FunctionDeclaration way
                 const functionName = path.node.id.name
                 const { start, end } = path.node.loc
                 countLines(start.line, end.line, functionName)
             } else if (path.isVariableDeclaration()) {
+                // count the lines of funcion which is defined by a VariableDeclaration way
                 const declaration = path.node.declarations[0]
                 if (
                     declaration &&
@@ -38,6 +40,7 @@ const jsFuncCounter = function (filePath) {
                     countLines(start.line, end.line, functionName)
                 }
             } else if (path.isProperty()) {
+                // count the lines of function as an property of a certain Object
                 const value = path.node.value
                 if (
                     value &&
@@ -49,6 +52,7 @@ const jsFuncCounter = function (filePath) {
                     countLines(start.line, end.line, functionName)
                 }
             } else if (path.isObjectMethod()) {
+                // count the lines of function as an method of a certain Object
                 const methodName = path.node.key.name
                 const { start, end } = path.node.body.loc
                 countLines(start.line, end.line, methodName)
