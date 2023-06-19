@@ -4,7 +4,7 @@ const traverse = require('@babel/traverse').default
 const config = require('./config')
 const COUNT_COMMENT = config.countComment ? true : false
 
-const jsFuncCount = function (filePath) {
+const jsFuncCounter = function (filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
     const isModule = fileContent.includes('import') || fileContent.includes('export')
     const lines = fileContent.split('\n')
@@ -101,4 +101,4 @@ const jsFuncCount = function (filePath) {
     return functionLineCountsResult
 }
 
-module.exports = jsFuncCount
+module.exports = jsFuncCounter
