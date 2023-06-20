@@ -10,15 +10,21 @@ const jsFuncCounter = function (filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
     const isModule = fileContent.includes('import') || fileContent.includes('export')
     const lines = fileContent.split('\n')
-
-    const ast = parser.parse(fileContent, {
-        sourceType: isModule ? 'module' : 'script',
-        tokens: true,
-        ranges: true,
-        attachComment: true,
-    })
-
     const functionLineCountsResult = []
+
+    let ast
+    try {
+        ast = parser.parse(fileContent, {
+            sourceType: isModule ? 'module' : 'script',
+            tokens: true,
+            ranges: true,
+            attachComment: true,
+        })
+    } catch (e) {
+        const { reasonCode, loc } = e
+        console.error(`${reasonCode} error occurred in the file ${filePath} at the line${loc.line}, this file would not be counted.`)
+        return functionLineCountsResult
+    }
 
     let { comments } = ast
 
