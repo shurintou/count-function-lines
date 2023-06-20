@@ -19,12 +19,10 @@ const funcLinesCountHandler = function () {
         } else {
             if (path.extname(directoryPath) === '.js') {
                 const functionLineCountsResult = jsFuncLinesCounter(directoryPath)
-                if (Object.keys(functionLineCountsResult).length > 0) {
+                if (functionLineCountsResult.length > 0) {
                     outputStr += directoryPath + '\n'
                     // output the result
-                    for (const functionName in functionLineCountsResult) {
-                        outputStr += config.outputTemplate(functionName, functionLineCountsResult[functionName])
-                    }
+                    functionLineCountsResult.forEach(result => outputStr += config.outputTemplate(result.functionName, result.lineCount, result.startLine, result.endLine) + '\n')
                     outputStr += '\n'
                 }
             }

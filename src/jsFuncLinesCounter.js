@@ -16,7 +16,7 @@ const jsFuncCounter = function (filePath) {
         attachComment: true,
     })
 
-    const functionLineCountsResult = {}
+    const functionLineCountsResult = []
 
     let { comments } = ast
 
@@ -61,16 +61,19 @@ const jsFuncCounter = function (filePath) {
     })
 
     function countLines(startLine, endLine, functionName) {
-        if (!functionLineCountsResult.hasOwnProperty(functionName)) {
-            let lineCount = 0
-            for (let i = startLine - 1; i < endLine; i++) {
-                const lineStr = lines[i].trim()
-                if (lineStr !== '') {
-                    lineCount = lineCount + 1 - commentLinesCount(i + 1, lineStr)
-                }
+        let lineCount = 0
+        for (let i = startLine - 1; i < endLine; i++) {
+            const lineStr = lines[i].trim()
+            if (lineStr !== '') {
+                lineCount = lineCount + 1 - commentLinesCount(i + 1, lineStr)
             }
-            functionLineCountsResult[functionName] = lineCount
         }
+        functionLineCountsResult.push({
+            functionName: functionName,
+            lineCount: lineCount,
+            startLine: startLine,
+            endLine: endLine,
+        })
     }
 
     function commentLinesCount(lineNumber, lineStr) {
