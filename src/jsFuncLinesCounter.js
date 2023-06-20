@@ -32,7 +32,7 @@ const jsFuncCounter = function (filePath) {
         enter(path) {
             if (path.isFunctionDeclaration()) {
                 // count the lines of funcion which is defined by a FunctionDeclaration way
-                const functionName = path.node.id.name
+                const functionName = path.node.id?.name || '[Anonymous]'
                 const { start, end } = path.node.loc
                 countLines(start.line, end.line, functionName)
             } else if (path.isVariableDeclaration()) {
@@ -55,7 +55,7 @@ const jsFuncCounter = function (filePath) {
                     (value.type === 'FunctionExpression' ||
                         value.type === 'ArrowFunctionExpression')
                 ) {
-                    const functionName = path.node.key.name
+                    const functionName = path.node.key.name || path.node.key.value || path.node.value.id?.name
                     const { start, end } = value.body.loc
                     countLines(start.line, end.line, functionName)
                 }
