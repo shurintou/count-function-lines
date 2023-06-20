@@ -17,11 +17,15 @@ const configValidator = function () {
 
     if (typeof targetPath !== 'string') throw new Error('The type of the targetPath should be a string.')
 
+    if (targetPath.trim().length === 0) throw new Error('The value of the targetPath should not be empty.')
+
     if (!Array.isArray(excludePaths)) throw new Error('The type of the excludePaths should be a array.')
 
     if (excludePaths.some(path => !path instanceof RegExp)) throw new Error('The type of each excludePath should be a regualr expression.')
 
     if (typeof ouputResultFilePath !== 'string') throw new Error('The type of the ouputResultFilePath should be a string.')
+
+    if (ouputResultFilePath.trim().length === 0) throw new Error('The value of the ouputResultFilePath should not be empty.')
 
     if (typeof outputTemplate !== 'function') throw new Error('The type of the outputTemplate should be a function.')
 }

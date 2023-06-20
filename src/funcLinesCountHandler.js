@@ -31,7 +31,7 @@ const funcLinesCountHandler = function () {
         }
     }
 
-    if (TARGET_PATH !== '') traverseDirectory(TARGET_PATH)
+    traverseDirectory(TARGET_PATH)
 
     return outputStr
 }
