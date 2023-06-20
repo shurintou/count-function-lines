@@ -2,7 +2,9 @@ const fs = require('fs')
 const parser = require('@babel/parser')
 const traverse = require('@babel/traverse').default
 const config = require('./config')
-const COUNT_COMMENT = config.countComment ? true : false
+const COUNT_COMMENT = config.countComment
+const MIN_LINE_COUNT = config.minLineCount
+const MAX_LINE_COUNT = config.maxLineCount
 
 const jsFuncCounter = function (filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
@@ -68,12 +70,14 @@ const jsFuncCounter = function (filePath) {
                 lineCount = lineCount + 1 - commentLinesCount(i + 1, lineStr)
             }
         }
-        functionLineCountsResult.push({
-            functionName: functionName,
-            lineCount: lineCount,
-            startLine: startLine,
-            endLine: endLine,
-        })
+        if (MIN_LINE_COUNT <= lineCount && lineCount <= MAX_LINE_COUNT) {
+            functionLineCountsResult.push({
+                functionName: functionName,
+                lineCount: lineCount,
+                startLine: startLine,
+                endLine: endLine,
+            })
+        }
     }
 
     function commentLinesCount(lineNumber, lineStr) {
