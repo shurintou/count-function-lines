@@ -1,7 +1,7 @@
 const config = require('./config')
 
 const configValidator = function () {
-    const { countComment, minLineCount, maxLineCount, targetPath, ouputResultFilePath, outputTemplate } = config
+    const { countComment, minLineCount, maxLineCount, targetPath, excludePaths, ouputResultFilePath, outputTemplate } = config
 
     if (typeof countComment !== 'boolean') throw new Error('The type of the countComment should be a boolean.')
 
@@ -16,6 +16,10 @@ const configValidator = function () {
     if (maxLineCount < 0) throw new Error('The maxLineCount should be positive.')
 
     if (typeof targetPath !== 'string') throw new Error('The type of the targetPath should be a string.')
+
+    if (!Array.isArray(excludePaths)) throw new Error('The type of the excludePaths should be a array.')
+
+    if (excludePaths.some(path => !path instanceof RegExp)) throw new Error('The type of each excludePath should be a regualr expression.')
 
     if (typeof ouputResultFilePath !== 'string') throw new Error('The type of the ouputResultFilePath should be a string.')
 
