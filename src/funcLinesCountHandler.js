@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const jsFuncLinesCounter = require('./jsFuncLinesCounter')
+const { jsFuncCounterHandler } = require('./jsFuncLinesCounter')
 const config = require('./config')
 const TARGET_PATH = config.targetPath
 const EXCLUDE_PATHS = config.excludePaths
@@ -23,11 +23,11 @@ const funcLinesCountHandler = function () {
             let functionLineCountsResult = []
             if (fileExtname === '.js') {
                 try {
-                    functionLineCountsResult = jsFuncLinesCounter(directoryPath)
+                    functionLineCountsResult = jsFuncCounterHandler(directoryPath)
                 }
                 catch (e) {
                     const { reasonCode, loc } = e
-                    console.error(`${reasonCode} error occurred in the file ${filePath} at the line${loc.line}, this file would not be counted.`)
+                    console.error(`${reasonCode} error occurred in the file ${directoryPath} at the line${loc.line}, this file would not be counted.`)
                     return functionLineCountsResult
                 }
             }

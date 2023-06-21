@@ -6,8 +6,12 @@ const COUNT_COMMENT = config.countComment
 const MIN_LINE_COUNT = config.minLineCount
 const MAX_LINE_COUNT = config.maxLineCount
 
-const jsFuncCounter = function (filePath) {
+const jsFuncCounterHandler = function (filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
+    return jsFuncCounter(fileContent)
+}
+
+const jsFuncCounter = function (fileContent) {
     const isModule = fileContent.includes('import') || fileContent.includes('export')
     const lines = fileContent.split('\n')
     const functionLineCountsResult = []
@@ -111,4 +115,5 @@ const jsFuncCounter = function (filePath) {
     return functionLineCountsResult
 }
 
-module.exports = jsFuncCounter
+module.exports.jsFuncCounterHandler = jsFuncCounterHandler
+module.exports.jsFuncCounter = jsFuncCounter
