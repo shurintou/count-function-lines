@@ -12,5 +12,5 @@ module.exports = {
     // Where the result file to be output.
     ouputResultFilePath: 'result.txt',
     // The template of the output.
-    outputTemplate: (functionName, linesCount, startLine, endLine) => `The lines of function '${functionName}'(${startLine}:${endLine}) is：${linesCount}\n`,
+    outputTemplate: (functionName, linesCount, startLine, endLine) => `The lines of function '${functionName}'(${startLine}:${endLine}) is：${linesCount}`,
 }
