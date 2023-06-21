@@ -98,6 +98,11 @@ const jsFuncCounter = function (fileContent, offset = 0) {
                         countedCommentsIndex.push(index)
                         countResult = endLine - startLine + 1
                     }
+                    else if (lineStr === '/*' + comment.value + '*/') {
+                        // single line with block type comment
+                        countedCommentsIndex.push(index)
+                        countResult = 1
+                    }
                 }
                 else if (lineStr === '//' + comment.value) {
                     // single line with line type comment
