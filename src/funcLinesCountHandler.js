@@ -19,14 +19,23 @@ const funcLinesCountHandler = function () {
                 traverseDirectory(filePath)
             })
         } else {
-            if (path.extname(directoryPath) === '.js') {
-                const functionLineCountsResult = jsFuncLinesCounter(directoryPath)
-                if (functionLineCountsResult.length > 0) {
-                    outputStr += directoryPath + '\n'
-                    // output the result
-                    functionLineCountsResult.forEach(result => outputStr += config.outputTemplate(result.functionName, result.lineCount, result.startLine, result.endLine) + '\n')
-                    outputStr += '\n'
+            const fileExtname = path.extname(directoryPath)
+            let functionLineCountsResult = []
+            if (fileExtname === '.js') {
+                try {
+                    functionLineCountsResult = jsFuncLinesCounter(directoryPath)
                 }
+                catch (e) {
+                    const { reasonCode, loc } = e
+                    console.error(`${reasonCode} error occurred in the file ${filePath} at the line${loc.line}, this file would not be counted.`)
+                    return functionLineCountsResult
+                }
+            }
+            if (functionLineCountsResult.length > 0) {
+                outputStr += directoryPath + '\n'
+                // output the result
+                functionLineCountsResult.forEach(result => outputStr += config.outputTemplate(result.functionName, result.lineCount, result.startLine, result.endLine) + '\n')
+                outputStr += '\n'
             }
         }
     }

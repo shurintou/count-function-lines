@@ -12,19 +12,12 @@ const jsFuncCounter = function (filePath) {
     const lines = fileContent.split('\n')
     const functionLineCountsResult = []
 
-    let ast
-    try {
-        ast = parser.parse(fileContent, {
-            sourceType: isModule ? 'module' : 'script',
-            tokens: true,
-            ranges: true,
-            attachComment: true,
-        })
-    } catch (e) {
-        const { reasonCode, loc } = e
-        console.error(`${reasonCode} error occurred in the file ${filePath} at the line${loc.line}, this file would not be counted.`)
-        return functionLineCountsResult
-    }
+    const ast = parser.parse(fileContent, {
+        sourceType: isModule ? 'module' : 'script',
+        tokens: true,
+        ranges: true,
+        attachComment: true,
+    })
 
     let { comments } = ast
 
