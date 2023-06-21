@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const { jsFuncCounterHandler } = require('./jsFuncLinesCounter')
+const { vueFuncCounterHandler } = require('./vueFuncLinesCounter')
 const config = require('./config')
 const TARGET_PATH = config.targetPath
 const EXCLUDE_PATHS = config.excludePaths
@@ -21,15 +22,16 @@ const funcLinesCountHandler = function () {
         } else {
             const fileExtname = path.extname(directoryPath)
             let functionLineCountsResult = []
-            if (fileExtname === '.js') {
-                try {
+            try {
+                if (fileExtname === '.js') {
                     functionLineCountsResult = jsFuncCounterHandler(directoryPath)
                 }
-                catch (e) {
-                    const { reasonCode, loc } = e
-                    console.error(`${reasonCode} error occurred in the file ${directoryPath} at the line${loc.line}, this file would not be counted.`)
-                    return functionLineCountsResult
+                else if (fileExtname === '.vue') {
+                    functionLineCountsResult = vueFuncCounterHandler(directoryPath)
                 }
+            }
+            catch (e) {
+                console.error(`'${e}' occurred in the file ${directoryPath}, this file would not be counted.`)
             }
             if (functionLineCountsResult.length > 0) {
                 outputStr += directoryPath + '\n'
