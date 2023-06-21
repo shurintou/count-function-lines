@@ -6,7 +6,11 @@ const vueFuncCounterHandler = function (filePath) {
     const vueFileContent = fs.readFileSync(filePath, 'utf-8')
     const { descriptor } = vueParser(vueFileContent)
     const scriptContent = descriptor.script?.content || descriptor.scriptSetup?.content
-    return jsFuncCounter(scriptContent, descriptor.script?.loc.start.line - 1 || descriptor.scriptSetup?.loc.start.line - 1)
+    if (scriptContent) {
+        // need to correct the line index of the <script> so pass the offset parameter.
+        return jsFuncCounter(scriptContent, descriptor.script?.loc.start.line - 1 || descriptor.scriptSetup?.loc.start.line - 1)
+    }
+    return []
 }
 
 module.exports.vueFuncCounterHandler = vueFuncCounterHandler
