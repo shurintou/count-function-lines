@@ -11,7 +11,7 @@ const jsFuncCounterHandler = function (filePath) {
     return jsFuncCounter(fileContent)
 }
 
-const jsFuncCounter = function (fileContent) {
+const jsFuncCounter = function (fileContent, offset = 0) {
     const isModule = fileContent.includes('import') || fileContent.includes('export')
     const lines = fileContent.split('\n')
     const functionLineCountsResult = []
@@ -77,8 +77,8 @@ const jsFuncCounter = function (fileContent) {
             functionLineCountsResult.push({
                 functionName: functionName,
                 lineCount: lineCount,
-                startLine: startLine,
-                endLine: endLine,
+                startLine: startLine + offset,
+                endLine: endLine + offset,
             })
         }
     }
