@@ -1,7 +1,7 @@
 const config = require('./config')
 
 const configValidator = function () {
-    const { countComment, minLineCount, maxLineCount, targetPath, excludePaths, ouputResultFilePath, outputTemplate } = config
+    const { countComment, minLineCount, maxLineCount, targetPath, excludePaths, ouputResultFilePath, outputTemplate, errorTemplate } = config
 
     if (typeof countComment !== 'boolean') throw new Error('The type of the countComment should be a boolean.')
 
@@ -28,6 +28,8 @@ const configValidator = function () {
     if (ouputResultFilePath.trim().length === 0) throw new Error('The value of the ouputResultFilePath should not be empty.')
 
     if (typeof outputTemplate !== 'function') throw new Error('The type of the outputTemplate should be a function.')
+
+    if (typeof errorTemplate !== 'function') throw new Error('The type of the errorTemplate should be a function.')
 }
 
 module.exports = configValidator

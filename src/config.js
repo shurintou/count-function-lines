@@ -13,4 +13,6 @@ module.exports = {
     ouputResultFilePath: 'result.txt',
     // The template of the output.
     outputTemplate: (functionName, linesCount, startLine, endLine) => `The lines of function '${functionName}'(${startLine}:${endLine}) is：${linesCount}`,
+    // The template of the error message.
+    errorTemplate: (error, filePath) => `'${error}' occurred in the file ${filePath}, this file would not be counted.`,
 }

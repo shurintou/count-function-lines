@@ -31,7 +31,7 @@ const funcLinesCountHandler = function () {
                 }
             }
             catch (e) {
-                console.error(`'${e}' occurred in the file ${directoryPath}, this file would not be counted.`)
+                console.error(config.errorTemplate(e, directoryPath))
             }
             if (functionLineCountsResult.length > 0) {
                 outputStr += directoryPath + '\n'
