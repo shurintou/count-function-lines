@@ -3,14 +3,21 @@ const path = require('path')
 const { jsFuncCounterHandler } = require('./jsFuncLinesCounter')
 const { vueFuncCounterHandler } = require('./vueFuncLinesCounter')
 const config = require('./config')
-const TARGET_PATH = config.targetPath
-const EXCLUDE_PATHS = config.excludePaths
+const { targetPath, excludePaths } = config
 
+/** 
+ * This is the function that handles the all counting operations.
+ * @returns {string} Returns the counting result.
+ */
 const funcLinesCountHandler = function () {
     let outputStr = ''
 
+    /** 
+     * Traverse the directoryPath to invoke function count handlers.
+     * @param {string} directoryPath
+     */
     function traverseDirectory(directoryPath) {
-        if (EXCLUDE_PATHS.some(regex => regex.test(directoryPath))) return
+        if (excludePaths.some(regex => regex.test(directoryPath))) return
         if (!path.isAbsolute(directoryPath)) directoryPath = __dirname + '\\' + directoryPath
         const stats = fs.statSync(directoryPath)
         if (stats.isDirectory()) {
@@ -42,7 +49,7 @@ const funcLinesCountHandler = function () {
         }
     }
 
-    traverseDirectory(TARGET_PATH)
+    traverseDirectory(targetPath)
 
     return outputStr
 }

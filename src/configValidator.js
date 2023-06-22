@@ -1,5 +1,6 @@
 const config = require('./config')
 
+/** This is a function that to validate configurations. */
 const configValidator = function () {
     const { countComment, minLineCount, maxLineCount, targetPath, excludePaths, ouputResultFilePath, outputTemplate, errorTemplate } = config
 

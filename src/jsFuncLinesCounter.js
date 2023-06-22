@@ -2,18 +2,44 @@ const fs = require('fs')
 const parser = require('@babel/parser')
 const traverse = require('@babel/traverse').default
 const config = require('./config')
-const COUNT_COMMENT = config.countComment
-const MIN_LINE_COUNT = config.minLineCount
-const MAX_LINE_COUNT = config.maxLineCount
+const { countComment, minLineCount, maxLineCount } = config
 
+/**
+ * @typedef FunctionLineCountsResult
+ * @type {object}
+ * @property {string} functionName - The name of the function.
+ * @property {number} lineCount -  The lines count of the function. 
+ * @property {number} startLine - The startLine of the function.
+ * @property {number} endLine - The endLine of the function.
+ */
+
+/**
+ * The counter handler of the javascript.
+ * @param {string} filePath The path of the file to be counted.
+ * @returns {FunctionLineCountsResult[]} 
+ */
 const jsFuncCounterHandler = function (filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
     return jsFuncCounter(fileContent)
 }
 
+/**
+ * The counter of the javascript.
+ * @returns {FunctionLineCountsResult[]} 
+ */
 const jsFuncCounter = function (fileContent, offset = 0) {
+    /** 
+     * @type {boolean} - 
+     */
     const isModule = fileContent.includes('import') || fileContent.includes('export')
+    /**
+     * @type {string[]} 
+     */
     const lines = fileContent.split('\n')
+    /** 
+     * The result array that returns from the counter.
+     * @type {FunctionLineCountsResult[]}
+     */
     const functionLineCountsResult = []
 
     const ast = parser.parse(fileContent, {
@@ -65,6 +91,12 @@ const jsFuncCounter = function (fileContent, offset = 0) {
         },
     })
 
+    /**
+     * This is the function to count the line and push the result to the results list. 
+     * @param {number} startLine The startLine of the function.
+     * @param {number} endLine The endLine of the function.
+     * @param {string} functionName The name of the function.
+     */
     function countLines(startLine, endLine, functionName) {
         let lineCount = 0
         for (let i = startLine - 1; i < endLine; i++) {
@@ -73,7 +105,7 @@ const jsFuncCounter = function (fileContent, offset = 0) {
                 lineCount = lineCount + 1 - commentLinesCount(i + 1, lineStr)
             }
         }
-        if (MIN_LINE_COUNT <= lineCount && lineCount <= MAX_LINE_COUNT) {
+        if (minLineCount <= lineCount && lineCount <= maxLineCount) {
             functionLineCountsResult.push({
                 functionName: functionName,
                 lineCount: lineCount,
@@ -83,10 +115,20 @@ const jsFuncCounter = function (fileContent, offset = 0) {
         }
     }
 
+    /** 
+     * This is the function that calculates the lins count of the comment.
+     * @param {number} lineNumber The number of hte line that to be calculated.
+     * @param {string} lineStr The content of the line.
+     * @returns {number} The lines count of the comment that should be subtracted.
+     */
     function commentLinesCount(lineNumber, lineStr) {
-        if (COUNT_COMMENT) return 0
+        if (countComment) return 0
 
         let countResult = 0
+        /** 
+         * The list of indexes that has been counted.
+         * @type {number[]}
+         */
         const countedCommentsIndex = []
 
         comments.forEach((comment, index) => {
