@@ -3,7 +3,7 @@ const vueParser = require('@vue/compiler-sfc').parse
 const { jsFuncCounter } = require('./jsFuncLinesCounter')
 
 /**
- * @typedef {import('./jsFuncLinesCounter').FunctionLineCountsResult} FunctionLineCountsResult
+ * @typedef {import('./funcLinesCountHandler').FunctionLineCountsResult} FunctionLineCountsResult
  */
 
 /**

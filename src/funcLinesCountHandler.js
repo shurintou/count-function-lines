@@ -5,6 +5,15 @@ const { vueFuncCounterHandler } = require('./vueFuncLinesCounter')
 const config = require('./config')
 const { targetPath, excludePaths } = config
 
+/**
+ * @typedef FunctionLineCountsResult
+ * @type {object}
+ * @property {string} functionName - The name of the function.
+ * @property {number} lineCount -  The lines count of the function. 
+ * @property {number} startLine - The startLine of the function.
+ * @property {number} endLine - The endLine of the function.
+ */
+
 /** 
  * This is the function that handles the all counting operations.
  * @returns {string} Returns the counting result.
@@ -28,6 +37,9 @@ const funcLinesCountHandler = function () {
             })
         } else {
             const fileExtname = path.extname(directoryPath)
+            /** 
+             * @type {FunctionLineCountsResult[]}
+             */
             let functionLineCountsResult = []
             try {
                 if (fileExtname === '.js') {

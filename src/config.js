@@ -1,3 +1,4 @@
+/** This is the configuration of the function lines counter. */
 module.exports = {
     /** 
      * Whether to count comment or not, the false is not to count.

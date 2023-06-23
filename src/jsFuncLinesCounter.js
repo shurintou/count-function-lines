@@ -5,12 +5,7 @@ const config = require('./config')
 const { countComment, minLineCount, maxLineCount } = config
 
 /**
- * @typedef FunctionLineCountsResult
- * @type {object}
- * @property {string} functionName - The name of the function.
- * @property {number} lineCount -  The lines count of the function. 
- * @property {number} startLine - The startLine of the function.
- * @property {number} endLine - The endLine of the function.
+ * @typedef {import('./funcLinesCountHandler').FunctionLineCountsResult} FunctionLineCountsResult
  */
 
 /**
@@ -29,7 +24,7 @@ const jsFuncCounterHandler = function (filePath) {
  */
 const jsFuncCounter = function (fileContent, offset = 0) {
     /** 
-     * @type {boolean} - 
+     * @type {boolean}  
      */
     const isModule = fileContent.includes('import') || fileContent.includes('export')
     /**
@@ -37,7 +32,6 @@ const jsFuncCounter = function (fileContent, offset = 0) {
      */
     const lines = fileContent.split('\n')
     /** 
-     * The result array that returns from the counter.
      * @type {FunctionLineCountsResult[]}
      */
     const functionLineCountsResult = []
@@ -116,7 +110,7 @@ const jsFuncCounter = function (fileContent, offset = 0) {
     }
 
     /** 
-     * This is the function that calculates the lins count of the comment.
+     * This is the function that calculates the lines count of the comment.
      * @param {number} lineNumber The number of hte line that to be calculated.
      * @param {string} lineStr The content of the line.
      * @returns {number} The lines count of the comment that should be subtracted.
