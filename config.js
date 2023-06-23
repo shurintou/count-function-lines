@@ -31,6 +31,12 @@ module.exports = {
     excludePaths: [/.*node_modules.*/, /.*jquery.*/],
 
     /** 
+    * The regular expressions of function name that you don't want to count lines.
+    * @type {RegExp[]}
+    */
+    excludeFunctionNames: [/data/],
+
+    /** 
     * Where the result file to be output.
     * @type {string}
     * 

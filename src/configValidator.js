@@ -2,7 +2,7 @@ const config = require('../config')
 
 /** This is a function that to validate configurations. */
 const configValidator = function () {
-    const { countComment, minLineCount, maxLineCount, targetPath, excludePaths, ouputResultFilePath, outputTemplate, errorTemplate } = config
+    const { countComment, minLineCount, maxLineCount, targetPath, excludePaths, excludeFunctionNames, ouputResultFilePath, outputTemplate, errorTemplate } = config
 
     if (typeof countComment !== 'boolean') throw new Error('The type of the countComment should be a boolean.')
 
@@ -23,6 +23,10 @@ const configValidator = function () {
     if (!Array.isArray(excludePaths)) throw new Error('The type of the excludePaths should be a array.')
 
     if (excludePaths.some(path => !path instanceof RegExp)) throw new Error('The type of each excludePath should be a regualr expression.')
+
+    if (!Array.isArray(excludeFunctionNames)) throw new Error('The type of the excludeFunctionNames should be a array.')
+
+    if (excludeFunctionNames.some(functionName => !functionName instanceof RegExp)) throw new Error('The type of each excludeFunctionName should be a regualr expression.')
 
     if (typeof ouputResultFilePath !== 'string') throw new Error('The type of the ouputResultFilePath should be a string.')
 
