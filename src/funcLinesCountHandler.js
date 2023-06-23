@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const { jsFuncCounterHandler } = require('./jsFuncLinesCounter')
 const { vueFuncCounterHandler } = require('./vueFuncLinesCounter')
-const config = require('./config')
+const config = require('../config')
 const { targetPath, excludePaths } = config
 
 /**

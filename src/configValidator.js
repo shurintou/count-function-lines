@@ -1,4 +1,4 @@
-const config = require('./config')
+const config = require('../config')
 
 /** This is a function that to validate configurations. */
 const configValidator = function () {

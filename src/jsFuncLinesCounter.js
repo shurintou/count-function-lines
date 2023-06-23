@@ -1,7 +1,7 @@
 const fs = require('fs')
 const parser = require('@babel/parser')
 const traverse = require('@babel/traverse').default
-const config = require('./config')
+const config = require('../config')
 const { countComment, minLineCount, maxLineCount } = config
 
 /**
