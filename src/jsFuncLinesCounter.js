@@ -20,6 +20,8 @@ const jsFuncCounterHandler = function (filePath) {
 
 /**
  * The counter of the javascript.
+ * @param {string} fileContent The content of the file.
+ * @param {number} [offset = 0] The offset of the content's location compared to the start of the file.
  * @returns {FunctionLineCountsResult[]} 
  */
 const jsFuncCounter = function (fileContent, offset = 0) {
