@@ -2,7 +2,7 @@ const fs = require('fs')
 const parser = require('@babel/parser')
 const traverse = require('@babel/traverse').default
 const config = require('../config')
-const { countComment, minLineCount, maxLineCount, excludeFunctionNames } = config
+const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames } = config
 
 /**
  * @typedef {import('./funcLinesCountHandler').FunctionLineCountsResult} FunctionLineCountsResult
@@ -98,7 +98,7 @@ const jsFuncCounter = function (fileContent, offset = 0) {
         let lineCount = 0
         for (let i = startLine - 1; i < endLine; i++) {
             const lineStr = lines[i].trim()
-            if (lineStr !== '') {
+            if (lineStr !== '' || countBlank) {
                 lineCount = lineCount + 1 - commentLinesCount(i + 1, lineStr)
             }
         }

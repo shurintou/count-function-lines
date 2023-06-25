@@ -6,6 +6,12 @@ module.exports = {
     */
     countComment: false,
 
+    /**
+     * Whether to count blank line or not, the false is not to count.
+     * @type {boolean} 
+     */
+    countBlank: false,
+
     /** 
      * Functions whose count line is less than this value will not output. 
      * @type {number}
