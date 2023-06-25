@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const { jsFuncCounterHandler } = require('./jsFuncLinesCounter')
 const { vueFuncCounterHandler } = require('./vueFuncLinesCounter')
+const { javaFuncCounterHandler } = require('./javaFuncLinesCounter')
 const config = require('../config')
 const { targetPath, excludePaths } = config
 
@@ -47,6 +48,9 @@ const funcLinesCountHandler = function () {
                 }
                 else if (fileExtname === '.vue') {
                     functionLineCountsResult = vueFuncCounterHandler(directoryPath)
+                }
+                else if (fileExtname === '.java') {
+                    functionLineCountsResult = javaFuncCounterHandler(directoryPath)
                 }
             }
             catch (e) {
