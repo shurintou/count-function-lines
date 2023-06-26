@@ -132,16 +132,17 @@ const javaFuncCounter = function (fileContent) {
         }
 
         // to subtract the lines count of comments from the count result above
-        functionComments.forEach(comment => {
-            if (countComment) return
-            const { startLine, endLine, image } = comment
-            if (startLine !== endLine) {
-                lineCount = lineCount - (endLine - startLine + 1)
-            }
-            else if (image === lines[startLine - 1].trim()) {
-                lineCount = lineCount - 1
-            }
-        })
+        if (!countComment) {
+            functionComments.forEach(comment => {
+                const { startLine, endLine, image } = comment
+                if (startLine !== endLine) {
+                    lineCount = lineCount - (endLine - startLine + 1)
+                }
+                else if (image === lines[startLine - 1].trim()) {
+                    lineCount = lineCount - 1
+                }
+            })
+        }
 
         // to push the result to the results list
         if (minLineCount <= lineCount && lineCount <= maxLineCount) {
