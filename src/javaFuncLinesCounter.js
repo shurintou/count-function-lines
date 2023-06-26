@@ -62,12 +62,23 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
     }
 
     block(ctx) {
-        this.children(ctx.block[0])
+        if (ctx.hasOwnProperty('block')) {
+            this.children(ctx.block[0])
+        }
+        else if (ctx.hasOwnProperty('Semicolon')) {
+            this.methodLocations.push(ctx.Semicolon[0])
+        }
+        else if (ctx.hasOwnProperty('LCurly') && ctx.hasOwnProperty('RCurly')) {
+            this.methodLocations.push({ startLine: ctx.LCurly[0].startLine, endLine: ctx.RCurly[0].endLine })
+        }
+
     }
 
     children(ctx) {
         this.methodLocations.push(ctx.location)
-        this.blockStatements(ctx.children?.blockStatements[0])
+        const blockStatements = ctx.children?.blockStatements
+        if (blockStatements && blockStatements.length > 0)
+            this.blockStatements(blockStatements[0])
     }
 
     blockStatements(ctx) {
