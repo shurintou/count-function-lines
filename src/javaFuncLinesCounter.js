@@ -57,16 +57,27 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
         const { methodHeader: [methodHeader], methodBody: [methodBody] } = ctx
         if (methodHeader && methodBody) {
             this.methodNames.push(methodHeader?.children?.methodDeclarator?.[0]?.children?.Identifier?.[0]?.image || '[Anonymous]')
+            /**
+             * @type {number} 
+             */
             const startLine = methodHeader.location?.startLine || 0
+            /**
+             * @type {number} 
+             */
             const endLine = methodBody.location?.endLine || 0
             this.methodLocations.push({ startLine: startLine, endLine: endLine })
 
+            /**
+            * @type {FunctionInnerComment[]} 
+            */
+            let functionComments = []
             const { children } = methodBody
             if (children.hasOwnProperty('block')) {
                 const blockStatements = children.block?.[0]?.children?.blockStatements
-                if (blockStatements && blockStatements.length > 0)
-                    this.methodComments.push(blockStatements?.[0]?.leadingComments)
+                if (blockStatements && blockStatements.length > 0) functionComments = blockStatements?.[0]?.leadingComments
             }
+            this.methodComments.push(functionComments)
+
         }
     }
 
