@@ -53,36 +53,21 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
         this.methodComments = []
     }
 
-    methodHeader(ctx) {
-        this.methodNames.push(ctx.methodDeclarator[0].children.Identifier[0].image)
-    }
+    methodDeclaration(ctx) {
+        const { methodHeader: [methodHeader], methodBody: [methodBody] } = ctx
+        if (methodHeader && methodBody) {
+            this.methodNames.push(methodHeader?.children?.methodDeclarator?.[0]?.children?.Identifier?.[0]?.image || '[Anonymous]')
+            const startLine = methodHeader.location?.startLine || 0
+            const endLine = methodBody.location?.endLine || 0
+            this.methodLocations.push({ startLine: startLine, endLine: endLine })
 
-    methodBody(ctx) {
-        this.block(ctx)
-    }
-
-    block(ctx) {
-        if (ctx.hasOwnProperty('block')) {
-            this.children(ctx.block[0])
+            const { children } = methodBody
+            if (children.hasOwnProperty('block')) {
+                const blockStatements = children.block?.[0]?.children?.blockStatements
+                if (blockStatements && blockStatements.length > 0)
+                    this.methodComments.push(blockStatements?.[0]?.leadingComments)
+            }
         }
-        else if (ctx.hasOwnProperty('Semicolon')) {
-            this.methodLocations.push(ctx.Semicolon[0])
-        }
-        else if (ctx.hasOwnProperty('LCurly') && ctx.hasOwnProperty('RCurly')) {
-            this.methodLocations.push({ startLine: ctx.LCurly[0].startLine, endLine: ctx.RCurly[0].endLine })
-        }
-
-    }
-
-    children(ctx) {
-        this.methodLocations.push(ctx.location)
-        const blockStatements = ctx.children?.blockStatements
-        if (blockStatements && blockStatements.length > 0)
-            this.blockStatements(blockStatements[0])
-    }
-
-    blockStatements(ctx) {
-        this.methodComments.push(ctx.leadingComments)
     }
 
 }
