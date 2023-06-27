@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { parse, BaseJavaCstVisitorWithDefaults } = require("java-parser")
+const { parse, BaseJavaCstVisitorWithDefaults, MethodDeclarationCtx, CstNode } = require("java-parser")
 const config = require('../config')
 const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames } = config
 
@@ -53,10 +53,14 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
         this.methodComments = []
     }
 
+    /**
+     * To implement the methodDeclaration method.
+     * @param {MethodDeclarationCtx} ctx 
+     */
     methodDeclaration(ctx) {
         const { methodHeader: [methodHeader], methodBody: [methodBody] } = ctx
         if (methodHeader && methodBody) {
-            this.methodNames.push(methodHeader?.children?.methodDeclarator?.[0]?.children?.Identifier?.[0]?.image || '[Anonymous]')
+            this.methodNames.push(methodHeader.children.methodDeclarator[0].children.Identifier[0].image || '[Anonymous]')
             /**
              * @type {number} 
              */
@@ -71,13 +75,30 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
             * @type {FunctionInnerComment[]} 
             */
             let functionComments = []
-            const { children } = methodBody
-            if (children.hasOwnProperty('block')) {
-                const blockStatements = children.block?.[0]?.children?.blockStatements
-                if (blockStatements && blockStatements.length > 0) functionComments = blockStatements?.[0]?.leadingComments
-            }
+            this.collectFunctionInnerComments(methodBody, functionComments)
             this.methodComments.push(functionComments)
 
+        }
+    }
+
+    /**
+     * To traverse the cst node to get all the comments inside the method body block.
+     * @param {CstNode} ctx
+     * @param {FunctionInnerComment[]} functionComments The result will be pushed in this list.
+     */
+    collectFunctionInnerComments(ctx, functionComments) {
+        if (typeof ctx === 'object') {
+            Object.keys(ctx).forEach(key => {
+                if (key === 'leadingComments') {
+                    ctx.leadingComments.forEach(leadingComment => functionComments.push(leadingComment))
+                }
+                else {
+                    this.collectFunctionInnerComments(ctx[key], functionComments)
+                }
+            })
+        }
+        else if (Array.isArray(ctx)) {
+            ctx.forEach(subCtx => this.collectFunctionInnerComments(subCtx, functionComments))
         }
     }
 
