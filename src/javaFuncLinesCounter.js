@@ -1,14 +1,11 @@
 const fs = require('fs')
-const { parse, BaseJavaCstVisitorWithDefaults, MethodDeclarationCtx, CstNode } = require("java-parser")
+const { parse, BaseJavaCstVisitorWithDefaults, MethodDeclarationCtx, CstNode, IToken } = require("java-parser")
 const config = require('../config')
 const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames } = config
 
 /**
  * @typedef FunctionInnerComment
- * @type {object}
- * @property {string} image - The content of the comment.
- * @property {number} startLine -  The start line of the comment. 
- * @property {number} endLine - The end line of the comment.
+ * @type {IToken}
  */
 
 /**
@@ -48,7 +45,7 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
          */
         this.methodLocations = []
         /**
-        * @type {FunctionInnerComment[]} 
+        * @type {Array<FunctionInnerComment[]>} 
         */
         this.methodComments = []
     }
