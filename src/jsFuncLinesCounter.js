@@ -128,28 +128,31 @@ const jsFuncCounter = function (fileContent, offset = 0) {
          */
         const countedCommentsIndex = []
 
-        comments.forEach((comment, index) => {
-            const { loc: { start: { line: startLine }, end: { line: endLine } } } = comment
+        for (i = 0, len = comments.length; i < len; i++) {
+            const { loc: { start: { line: startLine }, end: { line: endLine } } } = comments[i]
+            // To improve the performance because the comments list is listed by start line's asc order 
+            if (startLine > lineNumber || endLine < lineNumber) break
+
             if (startLine <= lineNumber && lineNumber <= endLine) {
-                if (comment.type === 'CommentBlock') {
+                if (comments[i].type === 'CommentBlock') {
                     if (startLine !== endLine) {
                         // multi-line with block type comment
-                        countedCommentsIndex.push(index)
+                        countedCommentsIndex.push(i)
                         countResult = endLine - startLine + 1
                     }
-                    else if (lineStr === '/*' + comment.value + '*/') {
+                    else if (lineStr === '/*' + comments[i].value + '*/') {
                         // single line with block type comment
-                        countedCommentsIndex.push(index)
+                        countedCommentsIndex.push(i)
                         countResult = 1
                     }
                 }
-                else if (lineStr === '//' + comment.value) {
+                else if (lineStr === '//' + comments[i].value) {
                     // single line with line type comment
-                    countedCommentsIndex.push(index)
+                    countedCommentsIndex.push(i)
                     countResult = 1
                 }
             }
-        })
+        }
 
         // to remove comments that already counted or passed
         comments = comments.filter((comment, index) => !countedCommentsIndex.includes(index) && comment.loc.start.line > lineNumber)
