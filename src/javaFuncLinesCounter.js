@@ -1,11 +1,16 @@
 const fs = require('fs')
-const { parse, BaseJavaCstVisitorWithDefaults, MethodDeclarationCtx, CstNode, IToken } = require("java-parser")
+const { parse, BaseJavaCstVisitorWithDefaults, MethodDeclarationCtx, } = require("java-parser")
 const config = require('../config')
 const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames } = config
 
 /**
- * @typedef FunctionInnerComment
- * @type {IToken}
+ * @typedef FunctionComment
+ * @type {object}
+ * @property {string} type -  The type of the comment, the value would be "CommentLine" or "CommentBlock". 
+ * @property {string} text -  The text of the comment. 
+ * @property {number} startLine -  The start line of the comment. 
+ * @property {number} endLine - The end line of the comment.
+
  */
 
 /**
@@ -44,10 +49,6 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
          * @type {FunctionLocation[]} 
          */
         this.methodLocations = []
-        /**
-        * @type {Array<FunctionInnerComment[]>} 
-        */
-        this.methodComments = []
     }
 
     /**
@@ -67,35 +68,6 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
              */
             const endLine = methodBody.location?.endLine || 0
             this.methodLocations.push({ startLine: startLine, endLine: endLine })
-
-            /**
-            * @type {FunctionInnerComment[]} 
-            */
-            let functionComments = []
-            this.collectFunctionInnerComments(methodBody, functionComments)
-            this.methodComments.push(functionComments)
-
-        }
-    }
-
-    /**
-     * To traverse the cst node to get all the comments inside the method body block.
-     * @param {CstNode} ctx
-     * @param {FunctionInnerComment[]} functionComments The result will be pushed in this list.
-     */
-    collectFunctionInnerComments(ctx, functionComments) {
-        if (typeof ctx === 'object') {
-            Object.keys(ctx).forEach(key => {
-                if (key === 'leadingComments') {
-                    ctx.leadingComments.forEach(leadingComment => functionComments.push(leadingComment))
-                }
-                else {
-                    this.collectFunctionInnerComments(ctx[key], functionComments)
-                }
-            })
-        }
-        else if (Array.isArray(ctx)) {
-            ctx.forEach(subCtx => this.collectFunctionInnerComments(subCtx, functionComments))
         }
     }
 
@@ -122,8 +94,68 @@ const javaFuncCounter = function (fileContent) {
     if (visitor.methodNames) {
         visitor.methodNames.forEach((name, index) => {
             const { startLine, endLine } = visitor.methodLocations[index]
-            countLines(startLine, endLine, name, visitor.methodComments[index] || [])
+            const methodCommentList = getFunctionCommentList(startLine, lines.filter((line, index) => index >= startLine - 1 && index <= endLine - 1))
+            countLines(startLine, endLine, name, methodCommentList)
         })
+    }
+
+    /**
+     * This is the function to collect comments in function block.
+     * @param {number} startLine The startLine of the function.
+     * @param {string[]} lines The content of the function split by \n.
+     * @returns {FunctionComment[]} The comment list of the function.
+    */
+    function getFunctionCommentList(startLine, lines) {
+        // return the splitted content to be one with linebreaks.
+        const content = "".concat(lines.reduce((linesWithLineBreak, line) => linesWithLineBreak.concat('\n', line)))
+        const lineCommentPattern = /\/\/[^\n]*/g
+        const blockCommentPattern = /\/\*([^*]|\*(?!\/))*\*\//g
+        /**
+         * @type {FunctionComment[]} 
+         */
+        const comments = []
+        /**
+         * @type {RegExpExecArray | null}
+         */
+        let match
+
+        while ((match = lineCommentPattern.exec(content)) !== null) {
+            /**
+             * @type {FunctionComment} 
+             */
+            const comment = {
+                type: 'CommentLine',
+                text: match[0],
+                startLine: getLineNumber(content, match.index) + startLine - 1,
+                endLine: getLineNumber(content, match.index + match[0].length) + startLine - 1
+            }
+            comments.push(comment)
+        }
+        while ((match = blockCommentPattern.exec(content)) !== null) {
+            /**
+             * @type {FunctionComment} 
+             */
+            const comment = {
+                type: 'CommentBlock',
+                text: match[0],
+                startLine: getLineNumber(content, match.index) + startLine - 1,
+                endLine: getLineNumber(content, match.index + match[0].length) + startLine - 1
+            }
+            comments.push(comment)
+        }
+
+        /**
+         * Get the line number of the certain comment.
+         * @param {string} text The content of the function.
+         * @param {index} index The 0-based index of the match in the string.
+         * @returns {number} The line number of the certain comment.
+         */
+        function getLineNumber(text, index) {
+            const lines = text.substring(0, index).split('\n')
+            return lines.length
+        }
+
+        return comments
     }
 
     /**
@@ -131,7 +163,7 @@ const javaFuncCounter = function (fileContent) {
      * @param {number} startLine The startLine of the function.
      * @param {number} endLine The endLine of the function.
      * @param {string} functionName The name of the function.
-     * @param {FunctionInnerComment[]} functionComments The comments list of the function.
+     * @param {FunctionComment[]} functionComments The comments list of the function.
      */
     function countLines(startLine, endLine, functionName, functionComments) {
         if (excludeFunctionNames.some(regex => regex.test(functionName))) return
@@ -148,11 +180,11 @@ const javaFuncCounter = function (fileContent) {
         // to subtract the lines count of comments from the count result above
         if (!countComment) {
             functionComments.forEach(comment => {
-                const { startLine, endLine, image } = comment
+                const { startLine, endLine, text } = comment
                 if (startLine !== endLine) {
                     lineCount = lineCount - (endLine - startLine + 1)
                 }
-                else if (image === lines[startLine - 1].trim()) {
+                else if (text === lines[startLine - 1].trim()) {
                     lineCount = lineCount - 1
                 }
             })
