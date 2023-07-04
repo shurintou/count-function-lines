@@ -172,7 +172,7 @@ const javaFuncCounter = function (fileContent) {
         // to cumulate the lines count
         for (let i = startLine - 1; i < endLine; i++) {
             const lineStr = lines[i].trim()
-            if (lineStr !== '' || countBlank) {
+            if (lineStr !== '' || countBlank || isLineInBlockComment(i+1, functionComments)) {
                 lineCount = lineCount + 1
             }
         }
@@ -201,6 +201,18 @@ const javaFuncCounter = function (fileContent) {
         }
 
     }
+
+    /**
+     * This is the function to get boolean whether the given line is in a certain block comment.
+     * @param {number} lineNumber The number of the line.
+     * @param {FunctionComment[]} functionComments The comments list of the function.
+     * @returns {boolean}
+     */
+    function isLineInBlockComment(lineNumber, functionComments){
+        return functionComments.some(comment => comment.type === 'CommentBlock' && lineNumber > comment.startLine && lineNumber < comment.endLine)
+    }
+
+
     return functionLineCountsResult
 }
 
