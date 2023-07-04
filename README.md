@@ -1,10 +1,25 @@
+# Welcome to the project "count-function-lines".
 
-## This is a tool that helps you count function lines in your files.
+![NodeJs](https://img.shields.io/badge/NodeJS-%5E16.0.0-green)
+![babel-parser](https://img.shields.io/badge/%40babel%2Fparser-%5E7.22.5-blue)
+![@vue/compiler-sfc](https://img.shields.io/badge/%40vue%2Fcompiler--sfc-%5E3.3.4-brightgreen)
+![java-parser](https://img.shields.io/badge/java--parser-%5E2.0.4-orange)
+![NPM](https://img.shields.io/npm/l/express)
 
-### `npm install`
-Runs the script to install the dependencies.
 
-### `npm start`
-Runs the script to count the function lines under the path of `targetPath` which is set at the `config.js`. 
-The result will then be stored at the path of `ouputResultFilePath`.
-For more setting, please check the file `config.js`.
+### What's this?
+This is a tool that helps you count lines number of each function in your files.
+
+### Supporting languages
+Languages listed below are now being supported.
+1. `Javascript`
+2. `Vue.js(both vue2 and vue3)`
+3. `Java`
+
+### How to use?
+At the very beginning, make sure your `Node.js` version is at least `16.0.0`. Then,
+1. Fork this project to your local environment.
+2. Run `npm install` to install dependencies.
+3. Set `targetPath` at the `config.js`.
+4. Run `npm start` to count the function lines of files under the `targetPath`.
+5. Get the result stored at `ouputResultFilePath`.
