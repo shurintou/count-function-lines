@@ -118,16 +118,12 @@ const jsFuncCounter = function (fileContent, offset = 0) {
         const lineStr = lines[lineNumber - 1].trim()
         let lineCountResult = lineStr !== '' || countBlank ? 1 : 0
         let commentCountResult = 0
-        /** 
-         * The list of indexes that has been counted.
-         * @type {number[]}
-         */
-        const countedCommentsIndex = []
 
-        for (i = 0, len = comments.length; i < len; i++) {
+        for (let i = 0, len = comments.length; i < len; i++) {
             const { loc: { start: { line: startLine }, end: { line: endLine } } } = comments[i]
             // To improve the performance because the comments list is listed by start line's asc order 
-            if (startLine > lineNumber || endLine < lineNumber) break
+            if (startLine > lineNumber) break
+            if (endLine < lineNumber) continue
 
             if (startLine <= lineNumber && lineNumber <= endLine) {
                 if (comments[i].type === 'CommentBlock') {
@@ -138,24 +134,15 @@ const jsFuncCounter = function (fileContent, offset = 0) {
                     }
                     else if (lineStr === '/*' + comments[i].value + '*/') {
                         // single line with block type comment
-                        countedCommentsIndex.push(i)
                         commentCountResult = 1
                     }
                 }
                 else if (lineStr === '//' + comments[i].value) {
                     // single line with line type comment
-                    countedCommentsIndex.push(i)
                     commentCountResult = 1
                 }
             }
         }
-        // to remove comments that already counted or passed
-        comments = comments.filter((comment, index) => !countedCommentsIndex.includes(index) && (
-            (comment.type === 'CommentLine' && comment.loc.start.line > lineNumber)
-            ||
-            (comment.type === 'CommentBlock' && comment.loc.end.line > lineNumber)
-        )
-        )
 
         return lineCountResult - (countComment ? 0 : commentCountResult)
     }
