@@ -43,7 +43,7 @@ const funcLinesCountHandler = function () {
              */
             let functionLineCountsResult = []
             try {
-                if (fileExtname === '.js') {
+                if (['.js', '.jsx', '.ts', '.tsx'].includes(fileExtname)) {
                     functionLineCountsResult = jsFuncCounterHandler(directoryPath)
                 }
                 else if (fileExtname === '.vue') {

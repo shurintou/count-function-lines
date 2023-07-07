@@ -43,6 +43,7 @@ const jsFuncCounter = function (fileContent, offset = 0) {
         tokens: true,
         ranges: true,
         attachComment: true,
+        plugins: ['jsx', 'typescript'],
     })
 
     let { comments } = ast
