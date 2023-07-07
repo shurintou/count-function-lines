@@ -10,11 +10,9 @@
 ### What's this?
 This is a tool that helps you count lines number of each function in your files.
 
-### Supporting languages
-Languages listed below are now being supported.
-1. `Javascript`
-2. `Vue.js(both vue2 and vue3)`
-3. `Java`
+### Supporting file type
+File types listed below are now being supported.
+`Javascript, Typescript, jsx, tsx, Vue.js(both vue2 and vue3), Java`
 
 ### How to use?
 At the very beginning, make sure your `Node.js` version is at least `16.0.0`. Then,
