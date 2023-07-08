@@ -1,4 +1,4 @@
-# Welcome to the project "count-function-lines".
+# count-function-lines
 
 ![NodeJs](https://img.shields.io/badge/NodeJS-%5E16.0.0-green)
 ![babel-parser](https://img.shields.io/badge/%40babel%2Fparser-%5E7.22.5-blue)
@@ -7,7 +7,7 @@
 ![NPM](https://img.shields.io/npm/l/express)
 
 
-### What's this?
+### What is it?
 This is a tool that helps you count lines number of each function in your files.
 
 ### Supporting file type
