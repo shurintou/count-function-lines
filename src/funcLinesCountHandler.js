@@ -28,13 +28,11 @@ const funcLinesCountHandler = function () {
     const filePathList = []
     traverseDirectory(targetPath)
     const filePathListLenght = filePathList.length
-    console.log('Start counting...')
     filePathList.forEach((filePath, index) => {
         showProgressBar(filePathListLenght, index + 1)
         const resultStr = countFunctionLinesOfFile(filePath)
         outputStr += resultStr
     })
-    console.log('Counting Finished.')
 
 
     /** 
@@ -108,8 +106,9 @@ const funcLinesCountHandler = function () {
         const filledBar = "█".repeat(filledBarLength)
         const emptyBar = "░".repeat(emptyBarLength)
         const percentageProgress = Math.round(progress * 100)
+        const statusStr = percentageProgress === 100 ? 'Finished' : 'Counting...'
 
-        process.stdout.write(`Progress: [${filledBar}${emptyBar}] ${percentageProgress}% (${currentStep}/${totalSteps})  \r`)
+        process.stdout.write(`${statusStr}: [${filledBar}${emptyBar}] ${percentageProgress}% (${currentStep}/${totalSteps})  \r`)
 
         if (percentageProgress === 100) process.stdout.write('\n')
 
