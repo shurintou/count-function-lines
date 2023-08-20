@@ -5,7 +5,7 @@ const { vueFuncCounterHandler } = require('./vueFuncLinesCounter')
 const { javaFuncCounterHandler } = require('./javaFuncLinesCounter')
 const config = require('../config')
 const { targetPath, excludePaths } = config
-const supportFileType = ['.js', '.jsx', '.ts', '.tsx', '.vue', 'java']
+const supportFileType = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.java']
 
 /**
  * @typedef FunctionLineCountsResult
