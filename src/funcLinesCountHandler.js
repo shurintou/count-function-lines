@@ -11,9 +11,11 @@ const supportFileType = ['.js', '.jsx', '.ts', '.tsx', '.vue', 'java']
  * @typedef FunctionLineCountsResult
  * @type {object}
  * @property {string} functionName - The name of the function.
- * @property {number} lineCount -  The lines count of the function. 
+ * @property {number} lineCount -  The result lines count of the function that match the user-specified counting conditions. 
  * @property {number} startLine - The startLine of the function.
  * @property {number} endLine - The endLine of the function.
+ * @property {number} commentLineCount - The lines count of the comment inside the function.
+ * @property {number} blankLineCount - The lines count of the blank line inside the function.
  */
 
 /** 
@@ -85,7 +87,7 @@ const funcLinesCountHandler = function () {
         if (functionLineCountsResult.length > 0) {
             resultStr += filePath + '\n'
             // append the result
-            functionLineCountsResult.forEach(result => resultStr += config.outputTemplate(result.functionName, result.lineCount, result.startLine, result.endLine) + '\n')
+            functionLineCountsResult.forEach(result => resultStr += config.outputTemplate(result.functionName, result.lineCount, result.startLine, result.endLine, result.commentLineCount, result.blankLineCount) + '\n')
             resultStr += '\n'
         }
 

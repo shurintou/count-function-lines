@@ -9,6 +9,14 @@ const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNam
  */
 
 /**
+ * @typedef LineCountResult
+ * @type {object}
+ * @property {number} lineCountIncrement -  The increment of function line count for a certain line. 
+ * @property {number} commentLineCountIncrement - The increment of comment line count for a certain line.
+ * @property {number} blankLineCountIncrement - The increment of blank line count for a certain line.
+ */
+
+/**
  * The counter handler of the javascript.
  * @param {string} filePath The path of the file to be counted.
  * @returns {FunctionLineCountsResult[]} 
@@ -97,8 +105,13 @@ const jsFuncCounter = function (fileContent, offset = 0) {
     function countLines(startLine, endLine, functionName) {
         if (excludeFunctionNames.some(regex => regex.test(functionName))) return
         let lineCount = 0
+        let commentLineCount = 0
+        let blankLineCount = 0
         for (let i = startLine - 1; i < endLine; i++) {
-            lineCount += getLineCount(i + 1)
+            const { lineCountIncrement, commentLineCountIncrement, blankLineCountIncrement } = getLineCount(i + 1)
+            lineCount += lineCountIncrement
+            commentLineCount += commentLineCountIncrement
+            blankLineCount += blankLineCountIncrement
         }
         if (minLineCount <= lineCount && lineCount <= maxLineCount) {
             functionLineCountsResult.push({
@@ -106,6 +119,8 @@ const jsFuncCounter = function (fileContent, offset = 0) {
                 lineCount: lineCount,
                 startLine: startLine + offset,
                 endLine: endLine + offset,
+                commentLineCount: commentLineCount,
+                blankLineCount: blankLineCount,
             })
         }
     }
@@ -113,11 +128,19 @@ const jsFuncCounter = function (fileContent, offset = 0) {
     /** 
      * This is the function that calculates a certain line count in consideration of comments and blank line.
      * @param {number} lineNumber The number of hte line that to be calculated.
-     * @returns {number} The lines count of the comment that should be subtracted.
+     * @returns {LineCountResult} The result of the counting.
      */
     function getLineCount(lineNumber) {
         const lineStr = lines[lineNumber - 1].trim()
-        let lineCountResult = lineStr !== '' || countBlank ? 1 : 0
+        let lineCountResult = 0
+        let blankLineCountResult = 0
+        if (lineStr !== '') {
+            lineCountResult = 1
+        }
+        else {
+            blankLineCountResult = 1
+            if (countBlank) lineCountResult = 1
+        }
         let commentCountResult = 0
 
         for (let i = 0, len = comments.length; i < len; i++) {
@@ -145,7 +168,11 @@ const jsFuncCounter = function (fileContent, offset = 0) {
             }
         }
 
-        return lineCountResult - (countComment ? 0 : commentCountResult)
+        return {
+            lineCountIncrement: lineCountResult - (countComment ? 0 : commentCountResult),
+            commentLineCountIncrement: commentCountResult,
+            blankLineCountIncrement: commentCountResult === 0 ? blankLineCountResult : 0,
+        }
     }
 
     return functionLineCountsResult

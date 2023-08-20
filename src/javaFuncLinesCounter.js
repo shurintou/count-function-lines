@@ -168,12 +168,18 @@ const javaFuncCounter = function (fileContent) {
     function countLines(startLine, endLine, functionName, functionComments) {
         if (excludeFunctionNames.some(regex => regex.test(functionName))) return
         let lineCount = 0
+        let commentLineCount = 0
+        let blankLineCount = 0
 
         // to cumulate the lines count
         for (let i = startLine - 1; i < endLine; i++) {
             const lineStr = lines[i].trim()
-            if (lineStr !== '' || countBlank || isLineInBlockComment(i+1, functionComments)) {
+            if (lineStr !== '') {
                 lineCount = lineCount + 1
+            }
+            else {
+                blankLineCount = blankLineCount + 1
+                if (countBlank || isLineInBlockComment(i + 1, functionComments)) lineCount = lineCount + 1
             }
         }
 
@@ -182,10 +188,13 @@ const javaFuncCounter = function (fileContent) {
             functionComments.forEach(comment => {
                 const { startLine, endLine, text } = comment
                 if (startLine !== endLine) {
-                    lineCount = lineCount - (endLine - startLine + 1)
+                    const commentLine = endLine - startLine + 1
+                    lineCount = lineCount - commentLine
+                    commentLineCount = commentLineCount + commentLine
                 }
                 else if (text === lines[startLine - 1].trim()) {
                     lineCount = lineCount - 1
+                    commentLineCount = commentLineCount + 1
                 }
             })
         }
@@ -197,6 +206,8 @@ const javaFuncCounter = function (fileContent) {
                 lineCount: lineCount,
                 startLine: startLine,
                 endLine: endLine,
+                commentLineCount: commentLineCount,
+                blankLineCount: blankLineCount,
             })
         }
 
@@ -208,7 +219,7 @@ const javaFuncCounter = function (fileContent) {
      * @param {FunctionComment[]} functionComments The comments list of the function.
      * @returns {boolean}
      */
-    function isLineInBlockComment(lineNumber, functionComments){
+    function isLineInBlockComment(lineNumber, functionComments) {
         return functionComments.some(comment => comment.type === 'CommentBlock' && lineNumber > comment.startLine && lineNumber < comment.endLine)
     }
 
