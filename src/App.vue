@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import { useDark, useToggle } from '@vueuse/core'
+
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 </script>
 
-<template></template>
+<template>
+    <el-button @click="toggleDark()">Default</el-button>
+</template>
 
 <style scoped></style>
