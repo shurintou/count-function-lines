@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useDark, useToggle } from '@vueuse/core'
-
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
+import Header from '@/components/Header.vue'
+import Body from '@/components/Body.vue'
 </script>
 
 <template>
-    <el-button @click="toggleDark()">Default</el-button>
+    <Header />
+
+    <Body />
 </template>
 
-<style scoped></style>
