@@ -1,4 +1,4 @@
-const config = require('../config')
+import config from '../config.js'
 
 /** This is a function that to validate configurations. */
 const configValidator = function () {
@@ -39,4 +39,4 @@ const configValidator = function () {
     if (typeof errorTemplate !== 'function') throw new Error('The type of the errorTemplate should be a function.')
 }
 
-module.exports = configValidator
+export default configValidator

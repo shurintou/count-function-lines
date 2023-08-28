@@ -1,9 +1,9 @@
-const fs = require('fs')
-const path = require('path')
-const { jsFuncCounterHandler } = require('./jsFuncLinesCounter')
-const { vueFuncCounterHandler } = require('./vueFuncLinesCounter')
-const { javaFuncCounterHandler } = require('./javaFuncLinesCounter')
-const config = require('../config')
+import * as fs from 'fs'
+import * as path from 'path'
+import { jsFuncCounterHandler } from './jsFuncLinesCounter.js'
+import { vueFuncCounterHandler } from './vueFuncLinesCounter.js'
+import { javaFuncCounterHandler } from './javaFuncLinesCounter.js'
+import config from '../config.js'
 const { targetPath, excludePaths } = config
 const supportFileType = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.java']
 
@@ -123,4 +123,4 @@ const funcLinesCountHandler = function () {
 
 
 
-module.exports = funcLinesCountHandler
+export default funcLinesCountHandler
