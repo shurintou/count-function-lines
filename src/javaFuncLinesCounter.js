@@ -75,6 +75,7 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
 
 /**
  * The counter of the java.
+ * @param {string} fileContent The content of the file.
  * @returns {FunctionLineCountsResult[]} 
  */
 const javaFuncCounter = function (fileContent) {
@@ -228,3 +229,4 @@ const javaFuncCounter = function (fileContent) {
 }
 
 module.exports.javaFuncCounterHandler = javaFuncCounterHandler
+module.exports.javaFuncCounter = javaFuncCounter

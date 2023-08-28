@@ -12,8 +12,17 @@ const { jsFuncCounter } = require('./jsFuncLinesCounter')
  * @returns {FunctionLineCountsResult[]} 
  */
 const vueFuncCounterHandler = function (filePath) {
-    const vueFileContent = fs.readFileSync(filePath, 'utf-8')
-    const { descriptor } = vueParser(vueFileContent)
+    const fileContent = fs.readFileSync(filePath, 'utf-8')
+    return vueFuncCounter(fileContent)
+}
+
+/**
+ * The counter of the Vue.
+ * @param {string} fileContent The content of the file.
+ * @returns {FunctionLineCountsResult[]} 
+ */
+const vueFuncCounter = function (fileContent) {
+    const { descriptor } = vueParser(fileContent)
     const scriptContent = descriptor.script?.content || descriptor.scriptSetup?.content
     if (scriptContent) {
         // need to correct the line index of the <script> so pass the offset parameter.
@@ -23,3 +32,4 @@ const vueFuncCounterHandler = function (filePath) {
 }
 
 module.exports.vueFuncCounterHandler = vueFuncCounterHandler
+module.exports.vueFuncCounter = vueFuncCounter
