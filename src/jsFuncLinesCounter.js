@@ -1,8 +1,9 @@
-const fs = require('fs')
-const parser = require('@babel/parser')
-const traverse = require('@babel/traverse').default
-const config = require('../config')
+import * as fs from 'fs'
+import * as parser from '@babel/parser'
+import babelTraverse from '@babel/traverse'
+import config from '../config.js'
 const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames } = config
+const traverse = babelTraverse.default
 
 /**
  * @typedef {import('./funcLinesCountHandler').FunctionLineCountsResult} FunctionLineCountsResult
@@ -21,7 +22,7 @@ const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNam
  * @param {string} filePath The path of the file to be counted.
  * @returns {FunctionLineCountsResult[]} 
  */
-const jsFuncCounterHandler = function (filePath) {
+export const jsFuncCounterHandler = function (filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
     return jsFuncCounter(fileContent)
 }
@@ -32,7 +33,7 @@ const jsFuncCounterHandler = function (filePath) {
  * @param {number} [offset = 0] The offset of the content's location compared to the start of the file.
  * @returns {FunctionLineCountsResult[]} 
  */
-const jsFuncCounter = function (fileContent, offset = 0) {
+export const jsFuncCounter = function (fileContent, offset = 0) {
     /** 
      * @type {boolean}  
      */
@@ -178,5 +179,3 @@ const jsFuncCounter = function (fileContent, offset = 0) {
     return functionLineCountsResult
 }
 
-module.exports.jsFuncCounterHandler = jsFuncCounterHandler
-module.exports.jsFuncCounter = jsFuncCounter

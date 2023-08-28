@@ -1,6 +1,7 @@
-const fs = require('fs')
-const { parse, BaseJavaCstVisitorWithDefaults, MethodDeclarationCtx, } = require("java-parser")
-const config = require('../config')
+import * as fs from 'fs'
+import * as javaParser from "java-parser"
+const { parse, BaseJavaCstVisitorWithDefaults, MethodDeclarationCtx, } = javaParser
+import config from '../config.js'
 const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames } = config
 
 /**
@@ -29,7 +30,7 @@ const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNam
  * @param {string} filePath The path of the file to be counted.
  * @returns {FunctionLineCountsResult[]} 
  */
-const javaFuncCounterHandler = function (filePath) {
+export const javaFuncCounterHandler = function (filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
     return javaFuncCounter(fileContent)
 }
@@ -78,7 +79,7 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
  * @param {string} fileContent The content of the file.
  * @returns {FunctionLineCountsResult[]} 
  */
-const javaFuncCounter = function (fileContent) {
+export const javaFuncCounter = function (fileContent) {
     const cst = parse(fileContent)
     /**
      * @type {string[]} 
@@ -228,5 +229,3 @@ const javaFuncCounter = function (fileContent) {
     return functionLineCountsResult
 }
 
-module.exports.javaFuncCounterHandler = javaFuncCounterHandler
-module.exports.javaFuncCounter = javaFuncCounter

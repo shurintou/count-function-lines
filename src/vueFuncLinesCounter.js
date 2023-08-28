@@ -1,6 +1,6 @@
-const fs = require('fs')
-const vueParser = require('@vue/compiler-sfc').parse
-const { jsFuncCounter } = require('./jsFuncLinesCounter')
+import * as fs from 'fs'
+import { parse as vueParser } from '@vue/compiler-sfc'
+import { jsFuncCounter } from './jsFuncLinesCounter.js'
 
 /**
  * @typedef {import('./funcLinesCountHandler').FunctionLineCountsResult} FunctionLineCountsResult
@@ -11,7 +11,7 @@ const { jsFuncCounter } = require('./jsFuncLinesCounter')
  * @param {string} filePath The path of the file to be counted.
  * @returns {FunctionLineCountsResult[]} 
  */
-const vueFuncCounterHandler = function (filePath) {
+export const vueFuncCounterHandler = function (filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
     return vueFuncCounter(fileContent)
 }
@@ -21,7 +21,7 @@ const vueFuncCounterHandler = function (filePath) {
  * @param {string} fileContent The content of the file.
  * @returns {FunctionLineCountsResult[]} 
  */
-const vueFuncCounter = function (fileContent) {
+export const vueFuncCounter = function (fileContent) {
     const { descriptor } = vueParser(fileContent)
     const scriptContent = descriptor.script?.content || descriptor.scriptSetup?.content
     if (scriptContent) {
@@ -30,6 +30,3 @@ const vueFuncCounter = function (fileContent) {
     }
     return []
 }
-
-module.exports.vueFuncCounterHandler = vueFuncCounterHandler
-module.exports.vueFuncCounter = vueFuncCounter
