@@ -3,7 +3,7 @@ import * as parser from '@babel/parser'
 import babelTraverse from '@babel/traverse'
 import config from '../config.js'
 const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames } = config
-const traverse = babelTraverse.default
+const traverse = babelTraverse.default || babelTraverse // when imported by other demo-dev project, the polyfill will unpack the default automatically.
 
 /**
  * @typedef {import('./funcLinesCountHandler').FunctionLineCountsResult} FunctionLineCountsResult
