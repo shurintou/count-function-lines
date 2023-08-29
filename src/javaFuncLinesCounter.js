@@ -186,8 +186,9 @@ export const javaFuncCounter = function (fileContent, countComment = false, coun
                 lineCount = lineCount + 1
             }
             else {
-                blankLineCount = blankLineCount + 1
-                if (countBlank || isLineInBlockComment(i + 1, functionComments)) lineCount = lineCount + 1
+                const lineInBlockCommentFlg = isLineInBlockComment(i + 1, functionComments)
+                if (!lineInBlockCommentFlg) blankLineCount = blankLineCount + 1
+                if (countBlank || lineInBlockCommentFlg) lineCount = lineCount + 1
             }
         }
 
