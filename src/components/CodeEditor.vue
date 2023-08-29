@@ -9,18 +9,25 @@ import type { EditorView } from 'codemirror'
 import type { EditorState } from '@codemirror/state'
 import { isPcModeRef } from '@/main'
 import { isPcModeKey } from '@/types/inject'
+import { jsFuncCounter, vueFuncCounter, javaFuncCounter } from 'count-function-lines'
 
-const code = ref(`console.log('Hello, world!')`)
+const code = ref<string>(`console.log('Hello, world!')`)
 const extensions = [javascript({ jsx: true, typescript: true }), vue(), java(), oneDark]
 const view = shallowRef<EditorView>()
-const handleReady = (payload: { view: EditorView, state: EditorState, container: HTMLDivElement }) => view.value = payload.view
+const state = shallowRef<EditorState>()
+const handleReady = (payload: { view: EditorView, state: EditorState, container: HTMLDivElement }) => {
+    view.value = payload.view
+    state.value = payload.state
+}
 const isPcMode = inject(isPcModeKey, isPcModeRef)
 
+const onCodeChange = (newCode: string) => {
+    console.log(jsFuncCounter(newCode))
+}
 </script>
 
 <template>
     <codemirror v-model="code" placeholder="Input your code..." :style="{ height: isPcMode ? '650px' : '400px' }"
         :autofocus="true" :indent-with-tab="true" :tab-size="4" :extensions="extensions" @ready="handleReady"
-        style=" font-weight: bold;" @change="console.log('change', $event)" @focus="console.log('focus', $event)"
-        @blur="console.log('blur', $event)" />
+        style="font-weight: bold;" @change="onCodeChange" />
 </template>
