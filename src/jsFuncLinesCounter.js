@@ -1,11 +1,9 @@
-import fs from 'fs'
 import * as parser from '@babel/parser'
 import babelTraverse from '@babel/traverse'
-import config from '../config.js'
 const traverse = babelTraverse.default || babelTraverse // when imported by other demo-dev project, the polyfill will unpack the default automatically.
 
 /**
- * @typedef {import('./funcLinesCountHandler').FunctionLineCountsResult} FunctionLineCountsResult
+ * @typedef {import('./index.d.ts').FunctionLineCountsResult} FunctionLineCountsResult
  */
 
 /**
@@ -16,16 +14,6 @@ const traverse = babelTraverse.default || babelTraverse // when imported by othe
  * @property {number} blankLineCountIncrement - The increment of blank line count for a certain line.
  */
 
-/**
- * The counter handler of the javascript.
- * @param {string} filePath The path of the file to be counted.
- * @returns {FunctionLineCountsResult[]} 
- */
-export const jsFuncCounterHandler = function (filePath) {
-    const fileContent = fs.readFileSync(filePath, 'utf-8')
-    const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames } = config
-    return jsFuncCounter(fileContent, 0, countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames)
-}
 
 /**
  * The counter of the javascript.
@@ -38,7 +26,7 @@ export const jsFuncCounterHandler = function (filePath) {
  * @param {RegExp[]} [excludeFunctionNames = []] The regular expressions of function name that you don't want to count lines.
  * @returns {FunctionLineCountsResult[]} 
  */
-export const jsFuncCounter = function (fileContent, offset = 0, countComment = false, countBlank = false, minLineCount = 0, maxLineCount = Infinity, excludeFunctionNames = []) {
+export default function (fileContent, offset = 0, countComment = false, countBlank = false, minLineCount = 0, maxLineCount = Infinity, excludeFunctionNames = []) {
     /** 
      * @type {boolean}  
      */

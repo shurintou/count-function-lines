@@ -3,9 +3,7 @@
     "version": "0.0.1",
     "description": "A script to count each function's lines in your Javascript file",
     "main": "src/index.js",
-    "scripts": {
-        "start": "node src/main.js"
-    },
+    "scripts": {},
     "keywords": [
         "count",
         "function",

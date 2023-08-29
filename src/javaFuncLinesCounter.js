@@ -1,7 +1,5 @@
-import fs from 'fs'
 import * as javaParser from "java-parser"
 const { parse, BaseJavaCstVisitorWithDefaults, MethodDeclarationCtx, } = javaParser
-import config from '../config.js'
 
 /**
  * @typedef FunctionComment
@@ -21,19 +19,8 @@ import config from '../config.js'
  */
 
 /**
- * @typedef {import('./funcLinesCountHandler').FunctionLineCountsResult} FunctionLineCountsResult
+ * @typedef {import('./index.d.ts').FunctionLineCountsResult} FunctionLineCountsResult
  */
-
-/**
- * The counter handler of the java.
- * @param {string} filePath The path of the file to be counted.
- * @returns {FunctionLineCountsResult[]} 
- */
-export const javaFuncCounterHandler = function (filePath) {
-    const fileContent = fs.readFileSync(filePath, 'utf-8')
-    const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames } = config
-    return javaFuncCounter(fileContent, countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames)
-}
 
 /**
  * This is the visitor class to traverse the Java Concrete Syntax Tree. 
@@ -85,7 +72,7 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
 
  * @returns {FunctionLineCountsResult[]} 
  */
-export const javaFuncCounter = function (fileContent, countComment = false, countBlank = false, minLineCount = 0, maxLineCount = Infinity, excludeFunctionNames = []) {
+export default function (fileContent, countComment = false, countBlank = false, minLineCount = 0, maxLineCount = Infinity, excludeFunctionNames = []) {
     const cst = parse(fileContent)
     /**
      * @type {string[]} 
