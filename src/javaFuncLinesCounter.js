@@ -2,7 +2,6 @@ import fs from 'fs'
 import * as javaParser from "java-parser"
 const { parse, BaseJavaCstVisitorWithDefaults, MethodDeclarationCtx, } = javaParser
 import config from '../config.js'
-const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames } = config
 
 /**
  * @typedef FunctionComment
@@ -32,7 +31,8 @@ const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNam
  */
 export const javaFuncCounterHandler = function (filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf-8')
-    return javaFuncCounter(fileContent)
+    const { countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames } = config
+    return javaFuncCounter(fileContent, countComment, countBlank, minLineCount, maxLineCount, excludeFunctionNames)
 }
 
 /**
@@ -77,9 +77,15 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
 /**
  * The counter of the java.
  * @param {string} fileContent The content of the file.
+ * @param {boolean} [countComment = false] Whether to count comment or not, the false is not to count.
+ * @param {boolean} [countBlank = false] Whether to count blank line or not, the false is not to count.
+ * @param {number} [minLineCount = 0] Functions whose count line is less than this value will not output.
+ * @param {number} [maxLineCount = Infinity] Functions whose count line is larger than this value will not output. 
+ * @param {RegExp[]} [excludeFunctionNames = []] The regular expressions of function name that you don't want to count lines.
+
  * @returns {FunctionLineCountsResult[]} 
  */
-export const javaFuncCounter = function (fileContent) {
+export const javaFuncCounter = function (fileContent, countComment = false, countBlank = false, minLineCount = 0, maxLineCount = Infinity, excludeFunctionNames = []) {
     const cst = parse(fileContent)
     /**
      * @type {string[]} 
