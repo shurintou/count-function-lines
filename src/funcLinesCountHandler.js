@@ -1,5 +1,6 @@
 import fs from 'fs'
 import * as path from 'path'
+import { fileURLToPath } from 'url'
 import { jsFuncCounterHandler } from './jsFuncLinesCounter.js'
 import { vueFuncCounterHandler } from './vueFuncLinesCounter.js'
 import { javaFuncCounterHandler } from './javaFuncLinesCounter.js'
@@ -43,7 +44,11 @@ const funcLinesCountHandler = function () {
      */
     function traverseDirectory(directoryPath) {
         if (excludePaths.some(regex => regex.test(directoryPath))) return
-        if (!path.isAbsolute(directoryPath)) directoryPath = __dirname + '\\' + directoryPath
+        if (!path.isAbsolute(directoryPath)) {
+            const dirname = path.dirname
+            const __dirname = dirname(fileURLToPath(import.meta.url))
+            directoryPath = __dirname + '\\' + directoryPath
+        }
         const stats = fs.statSync(directoryPath)
         if (stats.isDirectory()) {
             const files = fs.readdirSync(directoryPath)
