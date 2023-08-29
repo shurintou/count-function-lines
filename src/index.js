@@ -1,4 +1,8 @@
-import { javaFuncCounter } from './javaFuncLinesCounter.js'
-import { jsFuncCounter } from './jsFuncLinesCounter.js'
-import { vueFuncCounter } from './vueFuncLinesCounter.js'
-export { jsFuncCounter, vueFuncCounter, javaFuncCounter }
+import fs from 'fs'
+import configValidator from './configValidator.js'
+import funcLinesCountHandler from './funcLinesCountHandler.js'
+import config from '../config.js'
+const { ouputResultFilePath } = config
+configValidator()
+const result = funcLinesCountHandler()
+fs.writeFileSync(ouputResultFilePath, result)

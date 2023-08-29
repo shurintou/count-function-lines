@@ -28,7 +28,7 @@ export default {
     * The path of folder or file that you want to count lines.
     * @type {string}
     */
-    targetPath: 'D:/Programs/my-code-memos',
+    targetPath: 'examples',
 
     /** 
     * The regular expressions of folder or file that you don't want to count lines.
@@ -59,7 +59,7 @@ export default {
     * @property {number} blankLineCount - The lines count of the blank line inside the function.
     * 
     */
-    outputTemplate: (functionName, linesCount, startLine, endLine, commentLineCount, blankLineCount) => `The lines of function '${functionName}'(${startLine}:${endLine}) is：${linesCount}, having ${commentLineCount} comment lines and ${blankLineCount} blank lines.`,
+    outputTemplate: (functionName, linesCount, startLine, endLine, commentLineCount, blankLineCount) => `The total lines of function '${functionName}'(${startLine}:${endLine}) is：${endLine - startLine + 1}, including ${linesCount} valid lines, ${commentLineCount} comment lines and ${blankLineCount} blank lines.`,
     /** 
     * The template of the error message.
     * @param {error} error - The error that be thrown.

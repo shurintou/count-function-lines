@@ -4,7 +4,7 @@
     "description": "A script to count each function's lines in your Javascript file",
     "main": "src/index.js",
     "scripts": {
-        "start": "node src/main.js"
+        "start": "node src/index.js"
     },
     "keywords": [
         "count",
@@ -20,8 +20,5 @@
         "java-parser": "^2.0.4"
     },
     "type": "module",
-    "exports": {
-        "import": "./src/index.js"
-    },
     "module": "src/index.js"
 }

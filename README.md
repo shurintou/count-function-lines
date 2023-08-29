@@ -8,7 +8,7 @@
 
 
 ### What is it?
-This is a tool that helps you count lines number of each function in your files.
+This is a tool that helps you count lines number of each function in your files, and this is project is an example which can run in local environment.
 
 ### Supporting file type
 File types listed below are now being supported.
