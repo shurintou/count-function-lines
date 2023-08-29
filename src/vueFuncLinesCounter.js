@@ -1,4 +1,4 @@
-import * as fs from 'fs'
+import fs from 'fs'
 import { parse as vueParser } from '@vue/compiler-sfc'
 import { jsFuncCounter } from './jsFuncLinesCounter.js'
 

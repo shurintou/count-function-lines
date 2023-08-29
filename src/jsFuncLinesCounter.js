@@ -1,4 +1,4 @@
-import * as fs from 'fs'
+import fs from 'fs'
 import * as parser from '@babel/parser'
 import babelTraverse from '@babel/traverse'
 import config from '../config.js'

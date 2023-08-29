@@ -1,4 +1,4 @@
-import * as fs from 'fs'
+import fs from 'fs'
 import * as javaParser from "java-parser"
 const { parse, BaseJavaCstVisitorWithDefaults, MethodDeclarationCtx, } = javaParser
 import config from '../config.js'

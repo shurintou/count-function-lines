@@ -1,4 +1,4 @@
-import * as fs from 'fs'
+import fs from 'fs'
 import configValidator from './configValidator.js'
 import funcLinesCountHandler from './funcLinesCountHandler.js'
 import config from '../config.js'

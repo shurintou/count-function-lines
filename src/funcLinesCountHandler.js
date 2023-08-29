@@ -1,4 +1,4 @@
-import * as fs from 'fs'
+import fs from 'fs'
 import * as path from 'path'
 import { jsFuncCounterHandler } from './jsFuncLinesCounter.js'
 import { vueFuncCounterHandler } from './vueFuncLinesCounter.js'
