@@ -19,7 +19,7 @@ const { parse, BaseJavaCstVisitorWithDefaults, MethodDeclarationCtx, } = javaPar
  */
 
 /**
- * @typedef {import('../index.d.ts').FunctionLineCountsResult} FunctionLineCountsResult
+ * @typedef {import('../funcLinesCountHandler').FunctionLineCountsResult} FunctionLineCountsResult
  */
 
 /**

@@ -1,11 +1,11 @@
 import fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import { jsFuncCounterHandler } from './jsFuncLinesCounter.js'
-import { vueFuncCounterHandler } from './vueFuncLinesCounter.js'
-import { javaFuncCounterHandler } from './javaFuncLinesCounter.js'
+import jsFuncCounter from './counters/jsFuncLinesCounter.js'
+import vueFuncCounter from './counters/vueFuncLinesCounter.js'
+import javaFuncCounter from './counters/javaFuncLinesCounter.js'
 import config from '../config.js'
-const { targetPath, excludePaths } = config
+const { minLineCount, maxLineCount, excludeFunctionNames, targetPath, excludePaths } = config
 const supportFileType = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.java']
 
 /**
@@ -76,14 +76,19 @@ const funcLinesCountHandler = function () {
          */
         let functionLineCountsResult = []
         try {
+            let counter = null
             if (['.js', '.jsx', '.ts', '.tsx'].includes(fileExtname)) {
-                functionLineCountsResult = jsFuncCounterHandler(filePath)
+                counter = jsFuncCounter
             }
             else if (fileExtname === '.vue') {
-                functionLineCountsResult = vueFuncCounterHandler(filePath)
+                counter = vueFuncCounter
             }
             else if (fileExtname === '.java') {
-                functionLineCountsResult = javaFuncCounterHandler(filePath)
+                counter = javaFuncCounter
+            }
+            if (counter !== null) {
+                const fileContent = fs.readFileSync(filePath, 'utf-8')
+                functionLineCountsResult = counter(fileContent, minLineCount, maxLineCount, excludeFunctionNames)
             }
         }
         catch (e) {

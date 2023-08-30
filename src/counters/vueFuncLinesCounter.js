@@ -2,7 +2,7 @@ import { parse as vueParser } from '@vue/compiler-sfc'
 import jsFuncCounter from './jsFuncLinesCounter.js'
 
 /**
- * @typedef {import('../index.d.ts').FunctionLineCountsResult} FunctionLineCountsResult
+ * @typedef {import('../funcLinesCountHandler').FunctionLineCountsResult} FunctionLineCountsResult
  */
 
 /**
