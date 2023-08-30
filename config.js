@@ -40,14 +40,14 @@ export default {
     /** 
     * The template of the output.
     * @param {string} functionName - The name of the function.
-    * @param {number} linesCount - The result lines count of the function that match the user-specified counting conditions.
+    * @param {number} lineCount - The result lines count of the function that match the user-specified counting conditions.
     * @param {number} startLine - The startLine of the function.
     * @param {number} endLine - The endLine of the function.
     * @property {number} commentLineCount - The lines count of the comment inside the function.
     * @property {number} blankLineCount - The lines count of the blank line inside the function.
     * 
     */
-    outputTemplate: (functionName, linesCount, startLine, endLine, commentLineCount, blankLineCount) => `The total lines of function '${functionName}'(${startLine}:${endLine}) is：${endLine - startLine + 1}, including ${linesCount} valid lines, ${commentLineCount} comment lines and ${blankLineCount} blank lines.`,
+    outputTemplate: (functionName, lineCount, startLine, endLine, commentLineCount, blankLineCount) => `The total lines of function '${functionName}'(${startLine}:${endLine}) is：${endLine - startLine + 1}, including ${lineCount} valid lines, ${commentLineCount} comment lines and ${blankLineCount} blank lines.`,
     /** 
     * The template of the error message.
     * @param {error} error - The error that be thrown.
