@@ -20,9 +20,8 @@ export default function (fileContent, minLineCount = 0, maxLineCount = Infinity,
     if (scriptContent) {
         // need to correct the line index of the <script> so pass the offset parameter.
         return jsFuncCounter(
-            scriptContent,
+            scriptContent, minLineCount, maxLineCount, excludeFunctionNames,
             (descriptor.script?.loc.start.line - 1 || descriptor.scriptSetup?.loc.start.line - 1),
-            minLineCount, maxLineCount, excludeFunctionNames
         )
     }
     return []
