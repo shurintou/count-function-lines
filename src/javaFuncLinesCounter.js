@@ -64,15 +64,13 @@ class MethodVisitor extends BaseJavaCstVisitorWithDefaults {
 /**
  * The counter of the java.
  * @param {string} fileContent The content of the file.
- * @param {boolean} [countComment = false] Whether to count comment or not, the false is not to count.
- * @param {boolean} [countBlank = false] Whether to count blank line or not, the false is not to count.
  * @param {number} [minLineCount = 0] Functions whose count line is less than this value will not output.
  * @param {number} [maxLineCount = Infinity] Functions whose count line is larger than this value will not output. 
  * @param {RegExp[]} [excludeFunctionNames = []] The regular expressions of function name that you don't want to count lines.
 
  * @returns {FunctionLineCountsResult[]} 
  */
-export default function (fileContent, countComment = false, countBlank = false, minLineCount = 0, maxLineCount = Infinity, excludeFunctionNames = []) {
+export default function (fileContent, minLineCount = 0, maxLineCount = Infinity, excludeFunctionNames = []) {
     const cst = parse(fileContent)
     /**
      * @type {string[]} 
@@ -175,25 +173,23 @@ export default function (fileContent, countComment = false, countBlank = false, 
             else {
                 const lineInBlockCommentFlg = isLineInBlockComment(i + 1, functionComments)
                 if (!lineInBlockCommentFlg) blankLineCount = blankLineCount + 1
-                if (countBlank || lineInBlockCommentFlg) lineCount = lineCount + 1
+                if (lineInBlockCommentFlg) lineCount = lineCount + 1
             }
         }
 
         // to subtract the lines count of comments from the count result above
-        if (!countComment) {
-            functionComments.forEach(comment => {
-                const { startLine, endLine, text } = comment
-                if (startLine !== endLine) {
-                    const commentLine = endLine - startLine + 1
-                    lineCount = lineCount - commentLine
-                    commentLineCount = commentLineCount + commentLine
-                }
-                else if (text === lines[startLine - 1].trim()) {
-                    lineCount = lineCount - 1
-                    commentLineCount = commentLineCount + 1
-                }
-            })
-        }
+        functionComments.forEach(comment => {
+            const { startLine, endLine, text } = comment
+            if (startLine !== endLine) {
+                const commentLine = endLine - startLine + 1
+                lineCount = lineCount - commentLine
+                commentLineCount = commentLineCount + commentLine
+            }
+            else if (text === lines[startLine - 1].trim()) {
+                lineCount = lineCount - 1
+                commentLineCount = commentLineCount + 1
+            }
+        })
 
         // to push the result to the results list
         if (minLineCount <= lineCount && lineCount <= maxLineCount) {
