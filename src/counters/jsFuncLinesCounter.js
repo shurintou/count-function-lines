@@ -18,14 +18,14 @@ const traverse = babelTraverse.default || babelTraverse // when imported by othe
 /**
  * The counter of the javascript.
  * @param {string} fileContent The content of the file.
- * @param {number} [offset = 0] The offset of the content's location compared to the start of the file.
  * @param {number} [minLineCount = 0] Functions whose count line is less than this value will not output.
  * @param {number} [maxLineCount = Infinity] Functions whose count line is larger than this value will not output. 
  * @param {RegExp[]} [excludeFunctionNames = []] The regular expressions of function name that you don't want to count lines.
+ * @param {number} [offset = 0] The offset of the content's location compared to the start of the file.
 
  * @returns {FunctionLineCountsResult[]} 
  */
-export default function (fileContent, offset = 0, minLineCount = 0, maxLineCount = Infinity, excludeFunctionNames = []) {
+export default function (fileContent, minLineCount = 0, maxLineCount = Infinity, excludeFunctionNames = [], offset = 0) {
     /** 
      * @type {boolean}  
      */
