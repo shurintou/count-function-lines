@@ -1,9 +1,9 @@
 export interface CountResult {
     functionName: string
-    startPos: number
-    endPos: number
+    startLine: number
+    endLine: number
     totalLineCount: number
-    validCodeLineCount: number
+    lineCount: number
     commentLineCount: number
     blankLineCount: number
 }

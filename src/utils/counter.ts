@@ -13,14 +13,7 @@ export function useCounter() {
     onMounted(() => {
         const countResults: FunctionLineCountsResult[] = jsFuncCounter(code.value)
         tableData.value = countResults.map(countResult => {
-            const { startLine, endLine, lineCount } = countResult
-            return {
-                startPos: startLine,
-                endPos: endLine,
-                totalLineCount: endLine - startLine + 1,
-                validCodeLineCount: lineCount,
-                ...countResult
-            }
+            return { totalLineCount: countResult.endLine - countResult.startLine + 1, ...countResult }
         })
     })
 
