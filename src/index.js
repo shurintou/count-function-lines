@@ -1,4 +1,4 @@
-import javaFuncCounter from './javaFuncLinesCounter.js'
-import jsFuncCounter from './jsFuncLinesCounter.js'
-import vueFuncCounter from './vueFuncLinesCounter.js'
+import javaFuncCounter from './counters/javaFuncLinesCounter'
+import jsFuncCounter from './counters/jsFuncLinesCounter'
+import vueFuncCounter from './counters/vueFuncLinesCounter'
 export { jsFuncCounter, vueFuncCounter, javaFuncCounter }

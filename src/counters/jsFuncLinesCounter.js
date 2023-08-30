@@ -3,7 +3,7 @@ import babelTraverse from '@babel/traverse'
 const traverse = babelTraverse.default || babelTraverse // when imported by other demo-dev project, the polyfill will unpack the default automatically.
 
 /**
- * @typedef {import('./index.d.ts').FunctionLineCountsResult} FunctionLineCountsResult
+ * @typedef {import('../index.d.ts').FunctionLineCountsResult} FunctionLineCountsResult
  */
 
 /**
