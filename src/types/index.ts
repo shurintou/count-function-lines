@@ -3,7 +3,9 @@ export interface CountResult {
     startPos: number
     endPos: number
     totalLineCount: number
-    pureCodeLineCount: number
+    validCodeLineCount: number
     commentLineCount: number
     blankLineCount: number
 }
+
+export type SupportLanguages = '.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.java'

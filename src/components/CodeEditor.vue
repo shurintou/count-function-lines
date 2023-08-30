@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, shallowRef, inject } from 'vue'
+import { shallowRef, inject } from 'vue'
 import { Codemirror } from 'vue-codemirror'
 import { javascript } from '@codemirror/lang-javascript'
 import { vue } from '@codemirror/lang-vue'
@@ -9,9 +9,9 @@ import type { EditorView } from 'codemirror'
 import type { EditorState } from '@codemirror/state'
 import { isPcModeRef } from '@/main'
 import { isPcModeKey } from '@/types/inject'
-import { jsFuncCounter, vueFuncCounter, javaFuncCounter } from 'count-function-lines'
+import { useCounter } from '@/utils/counter'
 
-const code = ref<string>(`console.log('Hello, world!')`)
+const { code } = useCounter()
 const extensions = [javascript({ jsx: true, typescript: true }), vue(), java(), oneDark]
 const view = shallowRef<EditorView>()
 const state = shallowRef<EditorState>()
@@ -21,13 +21,10 @@ const handleReady = (payload: { view: EditorView, state: EditorState, container:
 }
 const isPcMode = inject(isPcModeKey, isPcModeRef)
 
-const onCodeChange = (newCode: string) => {
-    console.log(jsFuncCounter(newCode))
-}
 </script>
 
 <template>
-    <codemirror v-model="code" placeholder="Input your code..." :style="{ height: isPcMode ? '650px' : '400px' }"
-        :autofocus="true" :indent-with-tab="true" :tab-size="4" :extensions="extensions" @ready="handleReady"
-        style="font-weight: bold;" @change="onCodeChange" />
+    <codemirror v-model="code" placeholder="Input your code and count the lines."
+        :style="{ height: isPcMode ? '650px' : '400px' }" :autofocus="true" :indent-with-tab="true" :tab-size="4"
+        :extensions="extensions" @ready="handleReady" style="font-weight: bold;" />
 </template>
