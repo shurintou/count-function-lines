@@ -10,7 +10,7 @@
  */
 interface FunctionLineCountsResult {
     functionName: string
-    linesCount: number
+    lineCount: number
     startLine: number
     endLine: number
     commentLineCount: number
