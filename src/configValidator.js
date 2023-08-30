@@ -2,11 +2,7 @@ import config from '../config.js'
 
 /** This is a function that to validate configurations. */
 const configValidator = function () {
-    const { countComment, countBlank, minLineCount, maxLineCount, targetPath, excludePaths, excludeFunctionNames, ouputResultFilePath, outputTemplate, errorTemplate } = config
-
-    if (typeof countComment !== 'boolean') throw new Error('The type of the countComment should be a boolean.')
-
-    if (typeof countBlank !== 'boolean') throw new Error('The type of the countBlank should be a boolean.')
+    const { minLineCount, maxLineCount, targetPath, excludePaths, excludeFunctionNames, ouputResultFilePath, outputTemplate, errorTemplate } = config
 
     if (typeof minLineCount !== 'number') throw new Error('The type of the minLineCount should be a number.')
 

@@ -1,25 +1,13 @@
 /** This is the configuration of the function lines counter. */
 export default {
     /** 
-     * Whether to count comment or not, the false is not to count. It is preferred than countBlank.
-     * @type {boolean}
-    */
-    countComment: false,
-
-    /**
-     * Whether to count blank line or not, the false is not to count.
-     * @type {boolean} 
-     */
-    countBlank: false,
-
-    /** 
-     * Functions whose count line is less than this value will not output. 
+     * Functions whose valid count line is less than this value will not output. 
      * @type {number}
     */
     minLineCount: 0,
 
     /** 
-    * Functions whose count line is larger than this value will not output. 
+    * Functions whose valid count line is larger than this value will not output. 
     * @type {number}
     */
     maxLineCount: Infinity,
