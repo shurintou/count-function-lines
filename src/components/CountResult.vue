@@ -1,17 +1,26 @@
 <script setup lang="ts">
-import { inject } from 'vue'
+import { inject, computed } from 'vue'
 import { isPcModeRef } from '@/main'
 import { isPcModeKey } from '@/types/inject'
 import { useCounter } from '@/utils/counter'
+import LanguageSelector from './LanguageSelector.vue'
+import UploadButton from './UploadButton.vue'
 const isPcMode = inject(isPcModeKey, isPcModeRef)
 
-const { language, tableData } = useCounter()
+const { tableData } = useCounter()
+const commonStyle = computed(() =>
+    ({ marginLeft: isPcMode.value ? '10px' : '', marginTop: isPcMode.value ? '' : '10px', marginBottom: isPcMode.value ? '10px' : '' })
+)
 </script>
 
 
 <template>
-    <el-table :data="tableData" style="width: 100%;"
-        :style="{ marginLeft: isPcMode ? '10px' : '', marginTop: isPcMode ? '' : '10px' }">
+    <el-space wrap alignment="flex-start">
+        <UploadButton :style="commonStyle" />
+        <LanguageSelector :style="commonStyle" />
+    </el-space>
+
+    <el-table :data="tableData" style="width: 100%;" :style="commonStyle">
         <el-table-column sortable prop="functionName" label="name" />
         <el-table-column label="Position">
             <el-table-column sortable prop="startLine" label="start" />
