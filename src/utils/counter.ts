@@ -2,13 +2,13 @@ import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { getFuncCounter, type FunctionLineCountsResult } from 'count-function-lines'
 import type { CountResult } from '@/types/index'
 import { displayCode } from '@/configs/constant'
-import { type SupportLanguages } from 'count-function-lines'
+import { type SupportFileExtensions } from 'count-function-lines'
 import { throttle } from '@/utils/common'
 
 const code = ref<string>(displayCode)
 const loading = ref<boolean>(true)
 const errorMsg = ref<string>('')
-const language = ref<SupportLanguages>('.js')
+const language = ref<SupportFileExtensions>('.js')
 const tableData = ref<CountResult[]>([])
 
 export function useCounter() {
