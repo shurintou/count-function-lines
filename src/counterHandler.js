@@ -11,7 +11,7 @@ export const supportFileExtensions = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.ja
 /** 
  * To get the function counter for a certain file extension.
  * @param {string} fileExtname
- * @return {((fileContent: string, minLineCount?: number | undefined, maxLineCount?: number | undefined, excludeFunctionNames?: RegExp[] | undefined, offset?: number | undefined) => FunctionLineCountsResult[]) | undefined} 
+ * @return {((fileContent: string, minLineCount?: number | undefined, maxLineCount?: number | undefined, excludeFunctionNames?: RegExp[] | undefined) => FunctionLineCountsResult[]) | undefined} 
  */
 export const getFuncCounter = (fileExtname) => {
     if (['.js', '.jsx', '.ts', '.tsx'].includes(fileExtname)) {
