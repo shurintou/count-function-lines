@@ -185,7 +185,7 @@ export default function (fileContent, minLineCount = 0, maxLineCount = Infinity,
                 lineCount = lineCount - commentLine
                 commentLineCount = commentLineCount + commentLine
             }
-            else if (text === lines[startLine - 1].trim()) {
+            else if (text.trimEnd() === lines[startLine - 1].trim()) { // Fix: 'trimEnd' is to fix the bug that '// comment ' is not correctly counted as comment.
                 lineCount = lineCount - 1
                 commentLineCount = commentLineCount + 1
             }

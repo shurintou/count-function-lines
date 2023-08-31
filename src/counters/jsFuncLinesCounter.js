@@ -153,7 +153,7 @@ export default function (fileContent, minLineCount = 0, maxLineCount = Infinity,
                         commentCountResult = 1
                     }
                 }
-                else if (lineStr === '//' + comments[i].value) {
+                else if (lineStr === '//' + comments[i].value.trimEnd()) { // Fix: 'trimEnd' is to fix the bug that '// comment ' is not correctly counted as comment.
                     // single line with line type comment
                     commentCountResult = 1
                 }
