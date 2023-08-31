@@ -1,13 +1,9 @@
-import { type SupportLanguages } from '@/types/index'
-
 export const windowWidthConstant = {
     smWidth: 768,
     mdWidth: 992,
     lgWidth: 1200,
     xlWidth: 1920,
 }
-
-export const languageOptions: SupportLanguages[] = ['.js', '.ts', '.jsx', '.tsx', '.vue', '.java',]
 
 export const displayCode =
     `// input your code and count the lines.

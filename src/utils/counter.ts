@@ -1,8 +1,8 @@
 import { ref, onMounted, computed, watch, nextTick } from 'vue'
-import { jsFuncCounter, vueFuncCounter, javaFuncCounter, type FunctionLineCountsResult } from 'count-function-lines'
+import { getFuncCounter, type FunctionLineCountsResult } from 'count-function-lines'
 import type { CountResult } from '@/types/index'
 import { displayCode } from '@/configs/constant'
-import { type SupportLanguages } from '@/types/index'
+import { type SupportLanguages } from 'count-function-lines'
 import { throttle } from '@/utils/common'
 
 const code = ref<string>(displayCode)
@@ -12,18 +12,7 @@ const language = ref<SupportLanguages>('.js')
 const tableData = ref<CountResult[]>([])
 
 export function useCounter() {
-    const counter = computed(() => {
-        if (['.js', '.jsx', '.ts', '.tsx'].includes(language.value)) {
-            return jsFuncCounter
-        }
-        else if (language.value === '.vue') {
-            return vueFuncCounter
-        }
-        else if (language.value === '.java') {
-            return javaFuncCounter
-        }
-        return jsFuncCounter
-    })
+    const counter = computed(() => getFuncCounter(language.value))
 
     onMounted(() => countFunctionLine())
     watch(counter, () => countFunctionLine())
@@ -35,8 +24,14 @@ export function useCounter() {
         throttle(async () => {
             let countResultList: FunctionLineCountsResult[] = []
             try {
-                countResultList = counter.value(code.value)
-                errorMsg.value = ''
+                if (counter.value) {
+                    countResultList = counter.value(code.value)
+                    errorMsg.value = ''
+                }
+                else {
+                    countResultList = []
+                    errorMsg.value = 'unsupported file extension.'
+                }
             }
             catch (e) {
                 if (e instanceof Error) errorMsg.value = e.message

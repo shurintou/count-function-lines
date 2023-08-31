@@ -7,5 +7,3 @@ export interface CountResult {
     commentLineCount: number
     blankLineCount: number
 }
-
-export type SupportLanguages = '.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.java'
