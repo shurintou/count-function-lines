@@ -7,7 +7,7 @@ import LanguageSelector from './LanguageSelector.vue'
 import UploadButton from './UploadButton.vue'
 const isPcMode = inject(isPcModeKey, isPcModeRef)
 
-const { tableData, errorMsg } = useCounter()
+const { tableData, errorMsg, loading } = useCounter()
 const commonStyle = computed(() =>
     ({ marginLeft: isPcMode.value ? '10px' : '', marginTop: isPcMode.value ? '' : '10px', marginBottom: isPcMode.value ? '10px' : '' })
 )
@@ -20,7 +20,7 @@ const commonStyle = computed(() =>
         <LanguageSelector :style="commonStyle" />
     </el-space>
 
-    <el-table v-loading="tableData.length === 0 && errorMsg.length === 0" :data="tableData" style="width: 100%;"
+    <el-table v-loading="loading" element-loading-text="Counting..." :data="tableData" style="width: 100%;"
         :style="commonStyle">
         <template #empty>
             <el-result v-if="errorMsg.length > 0" icon="error" title="Error happened!" :sub-title="errorMsg" />
