@@ -21,7 +21,7 @@ const commonStyle = computed(() =>
     </el-space>
 
     <el-table v-loading="loading" element-loading-text="Counting..." :data="tableData" style="width: 100%;"
-        :style="commonStyle">
+        :style="commonStyle" :maxHeight="590">
         <template #empty>
             <el-result v-if="errorMsg.length > 0" icon="error" title="Error happened!" :sub-title="errorMsg" />
             <el-result v-else-if="!loading" icon="warning" title="No result?"
