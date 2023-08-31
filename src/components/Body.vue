@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import CodeEditor from './CodeEditor.vue';
+import CodeEditor from './CodeEditor.vue'
 import CountResult from './CountResult.vue'
 </script>
 
 <template>
-    <el-row style="margin-top: 5px;">
+    <el-row style="margin-top: 5px; margin-right:5px">
         <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <CodeEditor />
         </el-col>
