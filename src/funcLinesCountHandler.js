@@ -6,7 +6,7 @@ import vueFuncCounter from './counters/vueFuncLinesCounter.js'
 import javaFuncCounter from './counters/javaFuncLinesCounter.js'
 import config from '../config.js'
 const { minLineCount, maxLineCount, excludeFunctionNames, targetPath, excludePaths } = config
-const supportFileType = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.java']
+export const supportFileType = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.java']
 
 /**
  * @typedef FunctionLineCountsResult
@@ -76,17 +76,8 @@ const funcLinesCountHandler = function () {
          */
         let functionLineCountsResult = []
         try {
-            let counter = null
-            if (['.js', '.jsx', '.ts', '.tsx'].includes(fileExtname)) {
-                counter = jsFuncCounter
-            }
-            else if (fileExtname === '.vue') {
-                counter = vueFuncCounter
-            }
-            else if (fileExtname === '.java') {
-                counter = javaFuncCounter
-            }
-            if (counter !== null) {
+            let counter = getFuncCounter(fileExtname)
+            if (counter) {
                 const fileContent = fs.readFileSync(filePath, 'utf-8')
                 functionLineCountsResult = counter(fileContent, minLineCount, maxLineCount, excludeFunctionNames)
             }
@@ -130,7 +121,22 @@ const funcLinesCountHandler = function () {
 }
 
 
-
-
+/** 
+ * To get the function counter for a certain file extension.
+ * @param {string} fileExtname
+ * @return {((fileContent: string, minLineCount?: number | undefined, maxLineCount?: number | undefined, excludeFunctionNames?: RegExp[] | undefined, offset?: number | undefined) => FunctionLineCountsResult[]) | undefined} 
+ */
+export const getFuncCounter = (fileExtname) => {
+    if (['.js', '.jsx', '.ts', '.tsx'].includes(fileExtname)) {
+        return jsFuncCounter
+    }
+    else if (fileExtname === '.vue') {
+        return vueFuncCounter
+    }
+    else if (fileExtname === '.java') {
+        return javaFuncCounter
+    }
+    return undefined
+}
 
 export default funcLinesCountHandler
