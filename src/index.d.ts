@@ -17,12 +17,9 @@ interface FunctionLineCountsResult {
     blankLineCount: number
 }
 
-type SupportLanguages = '.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.java'
+type SupportFileExtensions = '.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.java'
 
-/**
- * @type {SupportLanguages[]}
- */
-declare const supportFileType: SupportLanguages[]
+declare const supportFileExtensions: ('.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.java')[]
 
 /**
  * The counter of the java.
@@ -65,4 +62,4 @@ declare function vueFuncCounter(fileContent: string, minLineCount?: number, maxL
  */
 declare function getFuncCounter(fileExtname: string): ((fileContent: string, minLineCount?: number | undefined, maxLineCount?: number | undefined, excludeFunctionNames?: RegExp[] | undefined, offset?: number | undefined) => FunctionLineCountsResult[]) | undefined
 
-export { getFuncCounter, javaFuncCounter, jsFuncCounter, vueFuncCounter, FunctionLineCountsResult, SupportLanguages, supportFileType }
+export { getFuncCounter, javaFuncCounter, jsFuncCounter, vueFuncCounter, FunctionLineCountsResult, SupportFileExtensions, supportFileExtensions }

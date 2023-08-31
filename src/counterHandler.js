@@ -2,6 +2,9 @@ import jsFuncCounter from './counters/jsFuncLinesCounter.js'
 import vueFuncCounter from './counters/vueFuncLinesCounter.js'
 import javaFuncCounter from './counters/javaFuncLinesCounter.js'
 
+/**
+ * @type {('.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.java')[]}
+ */
 export const supportFileExtensions = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.java']
 
 
