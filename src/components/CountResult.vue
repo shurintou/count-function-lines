@@ -24,6 +24,9 @@ const commonStyle = computed(() =>
         :style="commonStyle">
         <template #empty>
             <el-result v-if="errorMsg.length > 0" icon="error" title="Error happened!" :sub-title="errorMsg" />
+            <el-result v-else-if="!loading" icon="warning" title="No result?"
+                sub-title="Please check your code or change the file extension." />
+            <span v-else></span>
         </template>
         <el-table-column sortable prop="functionName" label="name" />
         <el-table-column label="Position">
