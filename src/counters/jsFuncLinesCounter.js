@@ -21,11 +21,10 @@ const traverse = babelTraverse.default || babelTraverse // when imported by othe
  * @param {number} [minLineCount = 0] Functions whose count line is less than this value will not output.
  * @param {number} [maxLineCount = Infinity] Functions whose count line is larger than this value will not output. 
  * @param {RegExp[]} [excludeFunctionNames = []] The regular expressions of function name that you don't want to count lines.
- * @param {number} [offset = 0] The offset of the content's location compared to the start of the file.
 
  * @returns {FunctionLineCountsResult[]} 
  */
-export default function (fileContent, minLineCount = 0, maxLineCount = Infinity, excludeFunctionNames = [], offset = 0) {
+export default function (fileContent, minLineCount = 0, maxLineCount = Infinity, excludeFunctionNames = []) {
     /** 
      * @type {boolean}  
      */
@@ -110,8 +109,8 @@ export default function (fileContent, minLineCount = 0, maxLineCount = Infinity,
             functionLineCountsResult.push({
                 functionName: functionName,
                 lineCount: lineCount,
-                startLine: startLine + offset,
-                endLine: endLine + offset,
+                startLine: startLine,
+                endLine: endLine,
                 commentLineCount: commentLineCount,
                 blankLineCount: blankLineCount,
             })
