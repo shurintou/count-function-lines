@@ -6,7 +6,7 @@ import vueFuncCounter from './counters/vueFuncLinesCounter.js'
 import javaFuncCounter from './counters/javaFuncLinesCounter.js'
 import config from '../config.js'
 const { minLineCount, maxLineCount, excludeFunctionNames, targetPath, excludePaths } = config
-export const supportFileType = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.java']
+export const supportFileExtensions = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.java']
 
 /**
  * @typedef FunctionLineCountsResult
@@ -23,7 +23,7 @@ export const supportFileType = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.java']
  * This is the function that handles the all counting operations.
  * @returns {string} Returns the counting result.
  */
-const funcLinesCountHandler = function () {
+const counterHandler = function () {
     let outputStr = ''
     /**
      * @type {string[]}  
@@ -57,7 +57,7 @@ const funcLinesCountHandler = function () {
                 traverseDirectory(filePath)
             })
         } else {
-            if (supportFileType.includes(path.extname(directoryPath))) filePathList.push(directoryPath)
+            if (supportFileExtensions.includes(path.extname(directoryPath))) filePathList.push(directoryPath)
         }
     }
 
@@ -139,4 +139,4 @@ export const getFuncCounter = (fileExtname) => {
     return undefined
 }
 
-export default funcLinesCountHandler
+export default counterHandler

@@ -1,8 +1,8 @@
 import fs from 'fs'
 import configValidator from './configValidator.js'
-import funcLinesCountHandler from './funcLinesCountHandler.js'
+import counterHandler from './counterHandler.js'
 import config from '../config.js'
 const { ouputResultFilePath } = config
 configValidator()
-const result = funcLinesCountHandler()
+const result = counterHandler()
 fs.writeFileSync(ouputResultFilePath, result)
