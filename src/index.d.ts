@@ -17,6 +17,12 @@ interface FunctionLineCountsResult {
     blankLineCount: number
 }
 
+type SupportLanguages = '.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.java'
+
+/**
+ * @type {SupportLanguages[]}
+ */
+declare const supportFileType: SupportLanguages[]
 
 /**
  * The counter of the java.
@@ -52,4 +58,11 @@ declare function jsFuncCounter(fileContent: string, minLineCount?: number, maxLi
  */
 declare function vueFuncCounter(fileContent: string, minLineCount?: number, maxLineCount?: number, excludeFunctionNames?: RegExp[]): FunctionLineCountsResult[]
 
-export { javaFuncCounter, jsFuncCounter, vueFuncCounter, FunctionLineCountsResult }
+/** 
+ * To get the function counter for a certain file extension.
+ * @param {string} fileExtname
+ * @return {((fileContent: string, minLineCount?: number | undefined, maxLineCount?: number | undefined, excludeFunctionNames?: RegExp[] | undefined, offset?: number | undefined) => FunctionLineCountsResult[]) | undefined} 
+ */
+declare function getFuncCounter(fileExtname: string): ((fileContent: string, minLineCount?: number | undefined, maxLineCount?: number | undefined, excludeFunctionNames?: RegExp[] | undefined, offset?: number | undefined) => FunctionLineCountsResult[]) | undefined
+
+export { getFuncCounter, javaFuncCounter, jsFuncCounter, vueFuncCounter, FunctionLineCountsResult, SupportLanguages, supportFileType }

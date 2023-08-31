@@ -1,4 +1,5 @@
 import javaFuncCounter from './counters/javaFuncLinesCounter'
 import jsFuncCounter from './counters/jsFuncLinesCounter'
 import vueFuncCounter from './counters/vueFuncLinesCounter'
-export { jsFuncCounter, vueFuncCounter, javaFuncCounter }
+import { supportFileType, getFuncCounter } from './funcLinesCountHandler'
+export { getFuncCounter, jsFuncCounter, vueFuncCounter, javaFuncCounter, supportFileType }
