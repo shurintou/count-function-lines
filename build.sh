@@ -29,6 +29,9 @@ function build(){
     cp -r $1/* ./
     sed -i 's/href="\//href=".\//g' index.html
     sed -i 's/src="\//src=".\//g' index.html
+    # to fix the issue 'process, Buffer is not defined.'
+    sed -i 's/<script/<script>window.Buffer = {}; window.process = { NODE_ENV: "'production'" }<\/script>\n  <script/g' index.html
+
 }
 # parameter: the dir of built source code 
 buildFolderPath=../demo-dev/dist
