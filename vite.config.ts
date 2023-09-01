@@ -4,7 +4,6 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill"
-import nodePolyfills from "rollup-plugin-polyfill-node"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -31,15 +30,11 @@ export default defineConfig({
     }
   },
   resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    }
-  },
-  build: {
-    rollupOptions: {
-      // Enable rollup polyfills plugin
-      // used during production bundling
-      plugins: [nodePolyfills()],
-    },
+    alias: [
+      { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
+      { find: /(use-globalThis-config)/g, replacement: 'use-global-config' },
+      { find: /(use-prevent-globalThis)/g, replacement: 'use-prevent-global' },
+      { find: /(globalThis-node)/g, replacement: 'global-node' },
+    ]
   },
 })
