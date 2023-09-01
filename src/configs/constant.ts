@@ -28,3 +28,5 @@ const abs = (bar) => {
     return -bar
 }
 `
+
+export const unSupportedFileExtensionError = 'unsupported file extension.'

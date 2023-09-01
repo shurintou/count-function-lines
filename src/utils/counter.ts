@@ -1,7 +1,7 @@
 import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { getFuncCounter, type FunctionLineCountsResult } from 'count-function-lines'
 import type { CountResult } from '@/types/index'
-import { displayCode } from '@/configs/constant'
+import { displayCode, unSupportedFileExtensionError } from '@/configs/constant'
 import { type SupportFileExtensions } from 'count-function-lines'
 import { throttle } from '@/utils/common'
 
@@ -30,7 +30,7 @@ export function useCounter() {
                 }
                 else {
                     countResultList = []
-                    errorMsg.value = 'unsupported file extension.'
+                    errorMsg.value = unSupportedFileExtensionError
                 }
             }
             catch (e) {
