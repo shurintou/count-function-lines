@@ -1,21 +1,13 @@
-import { useState, useEffect } from 'react'
 
-const Example = () => {
-    const [foo, setFoo] = useState<number>(0)
-    const addFooByOne = () => setFoo(foo + 1)
+export const factorial = function fac(n) {
+    // single comment
 
-    useEffect(() => {
-        // line comment
-        /* block comment */
-        setFoo(1)
-    }, [])
-
-    return (
-        <div>
-            <span>{foo}</span>
-            <button onClick={addFooByOne}></button>
-        </div>
-    )
+    return n < 2 ? 1 : n * fac(n - 1);
 }
 
-export default Example
+export const cube = function (x) {
+    /* block comment
+
+    */
+    return x * x * x;
+}
