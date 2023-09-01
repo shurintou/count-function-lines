@@ -10,14 +10,21 @@
 ### What is it?
 This is a tool that helps you count lines number of each function in your files.
 
-### Supporting file type
-File types listed below are now being supported.
-`Javascript`, `Typescript`, `jsx`, `tsx`, `Vue.js(both vue2 and vue3)`, `Java`
+Try the [demo](https://shurintou.github.io/count-function-lines/), 
 
-### How to use?
-At the very beginning, make sure your `Node.js` version is at least `16.0.0`. Then,
-1. Fork this project to your local environment.
-2. Run `npm install` to install dependencies.
-3. Set `targetPath` at the `config.js`.
-4. Run `npm start` to count the function lines of files under the `targetPath`.
-5. Get the result stored at `ouputResultFilePath`.
+![](https://github.com/shurintou/count-function-lines/blob/master/docs/demo.gif?raw=true)
+or import the [example](https://github.com/shurintou/count-function-lines/tree/example) project and run it at local.
+
+![](https://github.com/shurintou/count-function-lines/blob/master/docs/example_project.gif?raw=true)
+
+### Supporting file type
+The following file types are currently supported.
+`Javascript`, `Typescript`, `jsx`, `tsx`, `Vue.js(both vue2 and vue3)`, `Java`.
+
+### About the demo
+The [demo](https://shurintou.github.io/count-function-lines/) is developed by `Vue.js` and is a totally `pure-frontend` project, any codes uploaded will just be kept in the browser's memory only. 
+
+Please check the [development branch](https://github.com/shurintou/count-function-lines/tree/demo-dev) and the [production branch](https://github.com/shurintou/count-function-lines/tree/gh-pages) for more details if you get interested.
+
+### About the example 
+The [example](https://github.com/shurintou/count-function-lines/tree/example) project is more convenient to traverse folders and count multiple files because of the browser's limitation in file system. Developers who need to refactor their codes by some `line-number-rules` can take advantage of it.
