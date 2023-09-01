@@ -10,7 +10,6 @@ import type { UploadInstance, UploadFile, UploadFiles, UploadProps } from 'eleme
 
 const isPcMode = inject(isPcModeKey, isPcModeRef)
 const uploadRef = ref<UploadInstance>()
-const acceptFileType = supportFileExtensions.join(',')
 const { code, errorMsg, language, loading, tableData } = useCounter()
 
 const uploadFileHandler: UploadProps['onChange'] = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
@@ -39,8 +38,8 @@ const clearFile = () => uploadRef.value?.clearFiles()
 </script>
 
 <template>
-    <el-upload ref="uploadRef" :show-file-list="false" :limit="1" :auto-upload="false" :accept="acceptFileType"
-        :disabled="loading" :on-change="uploadFileHandler">
+    <el-upload ref="uploadRef" :show-file-list="false" :limit="1" :auto-upload="false" :disabled="loading"
+        :on-change="uploadFileHandler">
         <template #trigger>
             <el-button type="primary" :size="isPcMode ? 'large' : 'small'" :disabled="loading" @click="clearFile">upload
                 code
