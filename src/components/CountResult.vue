@@ -28,16 +28,16 @@ const commonStyle = computed(() =>
                 sub-title="Please check your code or change the file extension." />
             <span v-else></span>
         </template>
-        <el-table-column sortable prop="functionName" label="name" />
-        <el-table-column label="Position">
-            <el-table-column sortable prop="startLine" label="start" />
-            <el-table-column sortable prop="endLine" label="end" />
+        <el-table-column align="center" sortable prop="functionName" label="name" />
+        <el-table-column align="center" label="line count">
+            <el-table-column align="center" sortable prop="totalLineCount" label="total" />
+            <el-table-column align="center" sortable prop="lineCount" label="valid" />
+            <el-table-column align="center" sortable prop="commentLineCount" label="comment" :minWidth="100" />
+            <el-table-column align="center" sortable prop="blankLineCount" label="blank" />
         </el-table-column>
-        <el-table-column label="line count">
-            <el-table-column sortable prop="totalLineCount" label="total" />
-            <el-table-column sortable prop="lineCount" label="valid" />
-            <el-table-column sortable prop="commentLineCount" label="comment" :minWidth="100" />
-            <el-table-column sortable prop="blankLineCount" label="blank" />
+        <el-table-column align="center" label="Position">
+            <el-table-column align="center" sortable prop="startLine" label="start" />
+            <el-table-column align="center" sortable prop="endLine" label="end" />
         </el-table-column>
     </el-table>
 </template>
