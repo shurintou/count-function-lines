@@ -25,6 +25,6 @@ const isPcMode = inject(isPcModeKey, isPcModeRef)
 
 <template>
     <codemirror v-model="code" placeholder="Input your code and count the lines."
-        :style="{ height: isPcMode ? '650px' : '400px' }" :autofocus="true" :indent-with-tab="true" :tab-size="4"
+        :style="{ height: isPcMode ? '650px' : '400px' }" :autofocus="isPcMode" :indent-with-tab="true" :tab-size="4"
         :extensions="extensions" @ready="handleReady" style="font-weight: bold;" />
 </template>
