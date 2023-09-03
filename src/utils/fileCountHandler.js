@@ -3,17 +3,7 @@ import * as path from 'path'
 import { getFuncCounter } from 'count-function-lines'
 
 /**
- * @typedef FunctionLineCountsResult
- * @type {object}
- * @property {string} functionName - The name of the function.
- * @property {number} lineCount -  The result lines count of the function that match the user-specified counting conditions. 
- * @property {number} startLine - The startLine of the function.
- * @property {number} endLine - The endLine of the function.
- * @property {number} commentLineCount - The lines count of the comment inside the function.
- * @property {number} blankLineCount - The lines count of the blank line inside the function.
- */
-
-/**
+ * @typedef {import('count-function-lines').FunctionLineCountsResult} FunctionLineCountsResult
  * @typedef {import('../../config.js').OutputTemplate} OutputTemplate
  * @typedef {import('../../config.js').ErrorTemplate} ErrorTemplate
  */
