@@ -1,7 +1,6 @@
-import config from '../config.js'
 
 /** This is a function that to validate configurations. */
-const configValidator = function () {
+function configValidator(config) {
     const { minLineCount, maxLineCount, targetPath, excludePaths, excludeFunctionNames, ouputResultFilePath, outputTemplate, errorTemplate } = config
 
     if (typeof minLineCount !== 'number') throw new Error('The type of the minLineCount should be a number.')
