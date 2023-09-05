@@ -39,7 +39,7 @@ function fileCountHandler(filePath, minLineCount, maxLineCount, excludeFunctionN
     if (functionLineCountsResult.length > 0) {
         resultStr += filePath + '\n'
         // append the result
-        functionLineCountsResult.forEach(result => resultStr += outputTemplate(result.functionName, result.lineCount, result.startLine, result.endLine, result.commentLineCount, result.blankLineCount) + '\n')
+        functionLineCountsResult.forEach(result => resultStr += outputTemplate(result.functionName, result.validLineCount, result.startLine, result.endLine, result.commentLineCount, result.blankLineCount) + '\n')
         resultStr += '\n'
     }
 

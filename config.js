@@ -1,7 +1,7 @@
 /**
-* @typedef { (functionName:string, lineCount:number, startLine:number, endLine:number, commentLineCount:number, blankLineCount:number) => string} OutputTemplate
+* @typedef { (functionName:string, validLineCount:number, startLine:number, endLine:number, commentLineCount:number, blankLineCount:number) => string} OutputTemplate
 * @param {string} functionName - The name of the function.
-* @param {number} lineCount - The result lines count of the function that match the user-specified counting conditions.
+* @param {number} validLineCount - The lines count of the valid code inside the function. 
 * @param {number} startLine - The startLine of the function.
 * @param {number} endLine - The endLine of the function.
 * @param {number} commentLineCount - The lines count of the comment inside the function.
@@ -60,7 +60,7 @@ export default {
     * The template of the output.
     * @type {OutputTemplate}
     */
-    outputTemplate: (functionName, lineCount, startLine, endLine, commentLineCount, blankLineCount) => `The total lines of function '${functionName}'(${startLine}:${endLine}) is：${endLine - startLine + 1}, including ${lineCount} valid lines, ${commentLineCount} comment lines and ${blankLineCount} blank lines.`,
+    outputTemplate: (functionName, validLineCount, startLine, endLine, commentLineCount, blankLineCount) => `The total lines of function '${functionName}'(${startLine}:${endLine}) is：${endLine - startLine + 1}, including ${validLineCount} valid lines, ${commentLineCount} comment lines and ${blankLineCount} blank lines.`,
     /** 
     * The template of the error message.
     * @type {ErrorTemplate}
