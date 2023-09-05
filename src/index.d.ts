@@ -2,7 +2,7 @@
  * @typedef FunctionLineCountsResult
  * @type {object}
  * @property {string} functionName - The name of the function.
- * @property {number} lineCount -  The result lines count of the function that match the user-specified counting conditions. 
+ * @property {number} validLineCount -  The lines count of the valid code inside the function. 
  * @property {number} startLine - The startLine of the function.
  * @property {number} endLine - The endLine of the function.
  * @property {number} commentLineCount - The lines count of the comment inside the function.
@@ -10,7 +10,7 @@
  */
 interface FunctionLineCountsResult {
     functionName: string
-    lineCount: number
+    validLineCount: number
     startLine: number
     endLine: number
     commentLineCount: number

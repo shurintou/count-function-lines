@@ -160,7 +160,7 @@ export default function (fileContent, minLineCount = 0, maxLineCount = Infinity,
      */
     function countLines(startLine, endLine, functionName, functionComments) {
         if (excludeFunctionNames.some(regex => regex.test(functionName))) return
-        let lineCount = 0
+        let validLineCount = 0
         let commentLineCount = 0
         let blankLineCount = 0
 
@@ -168,12 +168,12 @@ export default function (fileContent, minLineCount = 0, maxLineCount = Infinity,
         for (let i = startLine - 1; i < endLine; i++) {
             const lineStr = lines[i].trim()
             if (lineStr !== '') {
-                lineCount = lineCount + 1
+                validLineCount = validLineCount + 1
             }
             else {
                 const lineInBlockCommentFlg = isLineInBlockComment(i + 1, functionComments)
                 if (!lineInBlockCommentFlg) blankLineCount = blankLineCount + 1
-                if (lineInBlockCommentFlg) lineCount = lineCount + 1
+                if (lineInBlockCommentFlg) validLineCount = validLineCount + 1
             }
         }
 
@@ -182,20 +182,20 @@ export default function (fileContent, minLineCount = 0, maxLineCount = Infinity,
             const { startLine, endLine, text } = comment
             if (startLine !== endLine) {
                 const commentLine = endLine - startLine + 1
-                lineCount = lineCount - commentLine
+                validLineCount = validLineCount - commentLine
                 commentLineCount = commentLineCount + commentLine
             }
             else if (text.trimEnd() === lines[startLine - 1].trim()) { // Fix: 'trimEnd' is to fix the bug that '// comment ' is not correctly counted as comment.
-                lineCount = lineCount - 1
+                validLineCount = validLineCount - 1
                 commentLineCount = commentLineCount + 1
             }
         })
 
         // to push the result to the results list
-        if (minLineCount <= lineCount && lineCount <= maxLineCount) {
+        if (minLineCount <= validLineCount && validLineCount <= maxLineCount) {
             functionLineCountsResult.push({
                 functionName: functionName,
-                lineCount: lineCount,
+                validLineCount: validLineCount,
                 startLine: startLine,
                 endLine: endLine,
                 commentLineCount: commentLineCount,

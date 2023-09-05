@@ -9,7 +9,7 @@ const traverse = babelTraverse.default || babelTraverse // when imported by othe
 /**
  * @typedef LineCountResult
  * @type {object}
- * @property {number} lineCountIncrement -  The increment of function line count for a certain line. 
+ * @property {number} validLineCountIncrement -  The increment of function line count for a certain line. 
  * @property {number} commentLineCountIncrement - The increment of comment line count for a certain line.
  * @property {number} blankLineCountIncrement - The increment of blank line count for a certain line.
  */
@@ -96,19 +96,19 @@ export default function (fileContent, minLineCount = 0, maxLineCount = Infinity,
      */
     function countLines(startLine, endLine, functionName) {
         if (excludeFunctionNames.some(regex => regex.test(functionName))) return
-        let lineCount = 0
+        let validLineCount = 0
         let commentLineCount = 0
         let blankLineCount = 0
         for (let i = startLine - 1; i < endLine; i++) {
-            const { lineCountIncrement, commentLineCountIncrement, blankLineCountIncrement } = getLineCount(i + 1)
-            lineCount += lineCountIncrement
+            const { validLineCountIncrement, commentLineCountIncrement, blankLineCountIncrement } = getLineCount(i + 1)
+            validLineCount += validLineCountIncrement
             commentLineCount += commentLineCountIncrement
             blankLineCount += blankLineCountIncrement
         }
-        if (minLineCount <= lineCount && lineCount <= maxLineCount) {
+        if (minLineCount <= validLineCount && validLineCount <= maxLineCount) {
             functionLineCountsResult.push({
                 functionName: functionName,
-                lineCount: lineCount,
+                validLineCount: validLineCount,
                 startLine: startLine,
                 endLine: endLine,
                 commentLineCount: commentLineCount,
@@ -124,10 +124,10 @@ export default function (fileContent, minLineCount = 0, maxLineCount = Infinity,
      */
     function getLineCount(lineNumber) {
         const lineStr = lines[lineNumber - 1].trim()
-        let lineCountResult = 0
+        let validLineCountResult = 0
         let blankLineCountResult = 0
         if (lineStr !== '') {
-            lineCountResult = 1
+            validLineCountResult = 1
         }
         else {
             blankLineCountResult = 1
@@ -145,7 +145,7 @@ export default function (fileContent, minLineCount = 0, maxLineCount = Infinity,
                     if (startLine !== endLine) {
                         // multi-line with block type comment
                         commentCountResult = 1
-                        if (lineStr === '') lineCountResult = 1 // treat blank line as a valid line.
+                        if (lineStr === '') validLineCountResult = 1 // treat blank line as a valid line.
                     }
                     else if (lineStr === '/*' + comments[i].value + '*/') {
                         // single line with block type comment
@@ -160,7 +160,7 @@ export default function (fileContent, minLineCount = 0, maxLineCount = Infinity,
         }
 
         return {
-            lineCountIncrement: lineCountResult - commentCountResult,
+            validLineCountIncrement: validLineCountResult - commentCountResult,
             commentLineCountIncrement: commentCountResult,
             blankLineCountIncrement: commentCountResult === 0 ? blankLineCountResult : 0,
         }
