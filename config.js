@@ -49,21 +49,4 @@ export default {
     */
     excludeFunctionNames: [/data/],
 
-    /** 
-    * Where the result file to be output.
-    * @type {string}
-    * 
-    */
-    ouputResultFilePath: 'result.txt',
-
-    /** 
-    * The template of the output.
-    * @type {OutputTemplate}
-    */
-    outputTemplate: (functionName, validLineCount, startLine, endLine, commentLineCount, blankLineCount) => `The total lines of function '${functionName}'(${startLine}:${endLine}) is：${endLine - startLine + 1}, including ${validLineCount} valid lines, ${commentLineCount} comment lines and ${blankLineCount} blank lines.`,
-    /** 
-    * The template of the error message.
-    * @type {ErrorTemplate}
-    */
-    errorTemplate: (error, filePath) => `'${error}' occurred in the file ${filePath}, this file would not be counted.`,
 }

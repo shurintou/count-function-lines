@@ -20,4 +20,4 @@ At the very beginning, make sure your `Node.js` version is at least `16.0.0`. Th
 2. Run `npm install` to install dependencies.
 3. Set `targetPath` at the `config.js`.
 4. Run `npm start` to count the function lines of files under the `targetPath`.
-5. Get the result stored at `ouputResultFilePath`.
+5. Get the result.txt file saved at the root path.

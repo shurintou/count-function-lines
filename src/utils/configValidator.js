@@ -1,7 +1,7 @@
 
 /** This is a function that to validate configurations. */
 function configValidator(config) {
-    const { minLineCount, maxLineCount, targetPath, excludePaths, excludeFunctionNames, ouputResultFilePath, outputTemplate, errorTemplate } = config
+    const { minLineCount, maxLineCount, targetPath, excludePaths, excludeFunctionNames, } = config
 
     if (typeof minLineCount !== 'number') throw new Error('The type of the minLineCount should be a number.')
 
@@ -25,13 +25,6 @@ function configValidator(config) {
 
     if (excludeFunctionNames.some(functionName => !functionName instanceof RegExp)) throw new Error('The type of each excludeFunctionName should be a regualr expression.')
 
-    if (typeof ouputResultFilePath !== 'string') throw new Error('The type of the ouputResultFilePath should be a string.')
-
-    if (ouputResultFilePath.trim().length === 0) throw new Error('The value of the ouputResultFilePath should not be empty.')
-
-    if (typeof outputTemplate !== 'function') throw new Error('The type of the outputTemplate should be a function.')
-
-    if (typeof errorTemplate !== 'function') throw new Error('The type of the errorTemplate should be a function.')
 }
 
 export default configValidator
