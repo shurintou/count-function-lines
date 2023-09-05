@@ -31,7 +31,7 @@ const commonStyle = computed(() =>
         <el-table-column align="center" sortable prop="functionName" label="name" />
         <el-table-column align="center" label="line count">
             <el-table-column align="center" sortable prop="totalLineCount" label="total" />
-            <el-table-column align="center" sortable prop="lineCount" label="valid" />
+            <el-table-column align="center" sortable prop="validLineCount" label="valid" />
             <el-table-column align="center" sortable prop="commentLineCount" label="comment" :minWidth="100" />
             <el-table-column align="center" sortable prop="blankLineCount" label="blank" />
         </el-table-column>

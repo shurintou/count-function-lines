@@ -3,7 +3,7 @@ export interface CountResult {
     startLine: number
     endLine: number
     totalLineCount: number
-    lineCount: number
+    validLineCount: number
     commentLineCount: number
     blankLineCount: number
 }
