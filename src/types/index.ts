@@ -7,3 +7,10 @@ export interface CountResult {
     commentLineCount: number
     blankLineCount: number
 }
+
+export type MouseMoveEventType = 'mouseEnter' | 'mouseLeave'
+
+export interface TableEvents {
+    (e: MouseMoveEventType, eventType: MouseMoveEventType, startLine: number, endLine: number): void
+    (e: 'clickResult', startLine: number): void
+}

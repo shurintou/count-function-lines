@@ -5,12 +5,19 @@ import { isPcModeKey } from '@/types/inject'
 import { useCounter } from '@/utils/counter'
 import LanguageSelector from './LanguageSelector.vue'
 import UploadButton from './UploadButton.vue'
+import { type FunctionLineCountsResult } from 'count-function-lines'
+import type { TableEvents, MouseMoveEventType } from '@/types/index'
 const isPcMode = inject(isPcModeKey, isPcModeRef)
 
 const { tableData, errorMsg, loading } = useCounter()
 const commonStyle = computed(() =>
     ({ marginLeft: isPcMode.value ? '10px' : '', marginTop: isPcMode.value ? '' : '10px', marginBottom: isPcMode.value ? '10px' : '' })
 )
+const mouseMoveEventHandler = (rowData: FunctionLineCountsResult, eventType: MouseMoveEventType) => {
+    emit(eventType, eventType, rowData.startLine, rowData.endLine)
+}
+const emit = defineEmits<TableEvents>()
+
 </script>
 
 
@@ -21,7 +28,10 @@ const commonStyle = computed(() =>
     </el-space>
 
     <el-table v-loading="loading" element-loading-text="Counting..." :data="tableData" style="width: 100%;"
-        :style="commonStyle" :maxHeight="590">
+        :style="commonStyle" :maxHeight="590"
+        @current-change="(rowData: FunctionLineCountsResult) => emit('clickResult', rowData.startLine)"
+        @cell-mouse-enter="(rowData: FunctionLineCountsResult) => mouseMoveEventHandler(rowData, 'mouseEnter')"
+        @cell-mouse-leave="(rowData: FunctionLineCountsResult) => mouseMoveEventHandler(rowData, 'mouseLeave')">
         <template #empty>
             <el-result v-if="errorMsg.length > 0" icon="error" title="Error happened!" :sub-title="errorMsg" />
             <el-result v-else-if="!loading" icon="warning" title="No result?"
