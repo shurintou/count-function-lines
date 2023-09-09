@@ -29,7 +29,7 @@ const emit = defineEmits<TableEvents>()
 
     <el-table v-loading="loading" element-loading-text="Counting..." :data="tableData" style="width: 100%;"
         :style="commonStyle" :maxHeight="590"
-        @current-change="(rowData: FunctionLineCountsResult) => emit('clickResult', rowData.startLine)"
+        @row-click="(rowData: FunctionLineCountsResult) => emit('clickResult', rowData.startLine)"
         @cell-mouse-enter="(rowData: FunctionLineCountsResult) => mouseMoveEventHandler(rowData, 'mouseEnter')"
         @cell-mouse-leave="(rowData: FunctionLineCountsResult) => mouseMoveEventHandler(rowData, 'mouseLeave')">
         <template #empty>
