@@ -8,7 +8,7 @@
 
 
 ### What is it?
-This is a tool that helps you count lines number of each function in your files.
+This is a tool that can be used to count the number of lines in each function in every file of your project.
 
 Try the [demo](https://shurintou.github.io/count-function-lines/), 
 
